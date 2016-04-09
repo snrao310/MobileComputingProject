@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/libs/internal_impl-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/internal_impl-23.2.1_fa7cf2968e4aa19db6ecda882e15f36c6b0f8920.jar" />
+    </item>
+    <item
+        jar="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.2.1_90fca3e069311c70fa4f25e2074c53e2a7095c8d.jar" />
+    </item>
+    <item
+        jar="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.2.1_75498ec69e5c6f61cda513198322f25155557741.jar" />
+    </item>
+    <item
+        jar="/home/sureshgururajan/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.1/support-annotations-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/support-annotations-23.2.1_fe30b1ada842c60983f9cd379c250feccf59aa8c.jar" />
+    </item>
+    <item
+        jar="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.2.1_9fed92ca4a35605e817bf02bb510650e45869ac3.jar" />
+    </item>
+    <item
+        jar="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="/home/sureshgururajan/Documents/Personal_Workspace/MobileComputingProject/Client/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.2.1_be269fc5c68f956f0f96d6b6c81e47b45e57507b.jar" />
+    </item>
+
+</items>
