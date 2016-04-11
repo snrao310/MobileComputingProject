@@ -7,10 +7,58 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mobilecomputing.group3.mcproject.MainActivity">
+    tools:context="com.mobilecomputing.group3.mcproject.MainActivity"
+    android:background="#bd9494">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="62dp"
+        android:background="#ffffff"
+        android:editable="false"
+        android:hint="username"
+        android:ems="10"
+        android:layout_alignEnd="@+id/editText2" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:hint="password"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/Login"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/editText2"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/Signup"
+        android:layout_below="@+id/Login"
+        android:layout_alignStart="@+id/Login"
+        android:onClick="onSignup"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="WELCOME!"
+        android:id="@+id/welcome"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
 </RelativeLayout>
