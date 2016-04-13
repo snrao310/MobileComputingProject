@@ -27,7 +27,7 @@ public class SignupActivity extends AppCompatActivity {
                 setContentView(R.layout.activity_signup);
                 FragmentManager fragmentManager= getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                MapFragment mapFragment=new MapFragment();
+                GMapFragment mapFragment=new GMapFragment();
                 fragmentTransaction.replace(R.id.frameCont,mapFragment);
                 fragmentTransaction.commit();
             }
