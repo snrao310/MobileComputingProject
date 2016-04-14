@@ -45,22 +45,10 @@ public class SignupActivity extends AppCompatActivity {
 
 
                 if( SignupActivity.this.getFragmentManager().getBackStackEntryCount() != 0 ){
-                    SignupActivity.this.getFragmentManager().popBackStack();}                //setContentView(R.layout.activity_signup);
-//                FragmentManager fragmentManager = getFragmentManager();
-//                SignupFragment signupFragment = new SignupFragment();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.content_frame, signupFragment);
-//                fragmentTransaction.commit();
+                    SignupActivity.this.getFragmentManager().popBackStack();}
             }
         });
 
     }
 
-
-
-//    public void onSetLoc(View view)
-//    {
-//        //Intent intent = new Intent(this, MapsActivity.class);
-//        //startActivity(intent);
-//    }
 }

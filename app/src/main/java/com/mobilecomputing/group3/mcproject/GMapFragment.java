@@ -88,8 +88,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             gmap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
             gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-            //CameraUpdate zoom=CameraUpdateFactory.zoomTo(1);
-            //gmap.animateCamera(zoom);
         }
     }
 }
