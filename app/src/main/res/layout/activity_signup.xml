@@ -11,18 +11,27 @@
     android:background="#bd9494">
 
 
-    <RelativeLayout
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/frameCont">-->
+    <!--</RelativeLayout>-->
+    <!--<fragment-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:id="@+id/mapfrag"-->
+        <!--android:name="com.mobilecomputing.group3.mcproject.GMapFragment" />-->
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frameCont">
-    </RelativeLayout>
+        android:layout_height="match_parent"></FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Location:"
         android:id="@+id/location"
-        android:layout_below="@+id/frameCont"
+        android:layout_below="@+id/mapfrag"
         android:layout_centerHorizontal="true"
         android:layout_alignLeft="@+id/locationbox"
         android:layout_marginTop="40dp" />

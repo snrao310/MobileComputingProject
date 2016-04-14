@@ -17,7 +17,7 @@ public class SignupActivity extends AppCompatActivity {
         FragmentManager fragmentManager= getFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         SignupFragment signupFragment=new SignupFragment();
-        fragmentTransaction.add(R.id.frameCont, signupFragment);
+        fragmentTransaction.add(R.id.content_frame, signupFragment);
         fragmentTransaction.commit();
 
         Button setLoc=(Button) findViewById(R.id.locSelect);
@@ -28,15 +28,15 @@ public class SignupActivity extends AppCompatActivity {
                 FragmentManager fragmentManager= getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
                 GMapFragment mapFragment=new GMapFragment();
-                fragmentTransaction.replace(R.id.frameCont,mapFragment);
+                fragmentTransaction.replace(R.id.content_frame,mapFragment);
                 fragmentTransaction.commit();
             }
         });
     }
 
-    public void onSetLoc(View view)
-    {
-        //Intent intent = new Intent(this, MapsActivity.class);
-        //startActivity(intent);
-    }
+//    public void onSetLoc(View view)
+//    {
+//        //Intent intent = new Intent(this, MapsActivity.class);
+//        //startActivity(intent);
+//    }
 }
