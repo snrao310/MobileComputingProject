@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -86,7 +87,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             gmap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            gmap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+            //CameraUpdate zoom=CameraUpdateFactory.zoomTo(1);
+            //gmap.animateCamera(zoom);
         }
     }
 }

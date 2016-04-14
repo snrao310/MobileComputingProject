@@ -14,7 +14,8 @@
             android:layout_marginBottom="5dp"
             android:layout_centerHorizontal="true"
             android:shadowColor="#060606"
-            android:background="#ffffff" />
+            android:background="#ffffff"
+            android:hint="Type your location and press search"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
             android:layout_below="@id/searchbox"
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
+            android:text="SEARCH"
             />
 
 
