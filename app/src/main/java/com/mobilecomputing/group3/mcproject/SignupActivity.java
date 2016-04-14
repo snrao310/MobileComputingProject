@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class SignupActivity extends AppCompatActivity {
+    GMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +26,16 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.activity_signup);
-                FragmentManager fragmentManager= getFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                GMapFragment mapFragment=new GMapFragment();
-                fragmentTransaction.replace(R.id.content_frame,mapFragment);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                mapFragment = new GMapFragment();
+                fragmentTransaction.replace(R.id.content_frame, mapFragment);
                 fragmentTransaction.commit();
             }
         });
     }
+
+
 
 //    public void onSetLoc(View view)
 //    {
