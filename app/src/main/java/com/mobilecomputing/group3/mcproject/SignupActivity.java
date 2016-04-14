@@ -11,6 +11,7 @@ import android.widget.Button;
 public class SignupActivity extends AppCompatActivity {
     GMapFragment mapFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,20 +20,40 @@ public class SignupActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         SignupFragment signupFragment=new SignupFragment();
         fragmentTransaction.add(R.id.content_frame, signupFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
         Button setLoc=(Button) findViewById(R.id.locSelect);
         setLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_signup);
+                //setContentView(R.layout.activity_signup);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 mapFragment = new GMapFragment();
                 fragmentTransaction.replace(R.id.content_frame, mapFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+
+        Button sig=(Button) findViewById(R.id.submit);
+        sig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                if( SignupActivity.this.getFragmentManager().getBackStackEntryCount() != 0 ){
+                    SignupActivity.this.getFragmentManager().popBackStack();}                //setContentView(R.layout.activity_signup);
+//                FragmentManager fragmentManager = getFragmentManager();
+//                SignupFragment signupFragment = new SignupFragment();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.content_frame, signupFragment);
+//                fragmentTransaction.commit();
+            }
+        });
+
     }
 
 

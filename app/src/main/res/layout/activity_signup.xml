@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,58 +13,64 @@
     android:background="#bd9494">
 
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/frameCont">-->
-    <!--</RelativeLayout>-->
-    <!--<fragment-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="300dp"-->
-        <!--android:id="@+id/mapfrag"-->
-        <!--android:name="com.mobilecomputing.group3.mcproject.GMapFragment" />-->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
+        android:layout_height="match_parent">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/frameCont">-->
+        <!--</RelativeLayout>-->
+        <!--<fragment-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="300dp"-->
+            <!--android:id="@+id/mapfrag"-->
+            <!--android:name="com.mobilecomputing.group3.mcproject.GMapFragment" />-->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></FrameLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location:"
-        android:id="@+id/location"
-        android:layout_below="@+id/content_frame"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/locationbox"
-        android:layout_marginTop="40dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:id="@+id/location"
+            android:layout_below="@+id/content_frame"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/locationbox"
+            android:layout_marginTop="40dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Location"
-        android:id="@+id/locSelect"
-        android:layout_below="@+id/location"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/location"
-        android:onClick="onSetLoc"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Location"
+            android:id="@+id/locSelect"
+            android:layout_below="@+id/location"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/location"
+            android:onClick="onSetLoc"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/locationbox"
-        android:layout_below="@+id/locSelect"
-        android:layout_centerHorizontal="true"
-        android:hint="Your selected Location"
-        android:background="#ffffff" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/locationbox"
+            android:layout_below="@+id/locSelect"
+            android:layout_centerHorizontal="true"
+            android:hint="Your selected Location"
+            android:background="#ffffff" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:id="@+id/submit"
-        android:layout_below="@+id/locationbox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-</RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:id="@+id/submit"
+            android:layout_below="@+id/locationbox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp" />
+
+    </RelativeLayout>
+</ScrollView>
+
