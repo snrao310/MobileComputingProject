@@ -4,6 +4,7 @@ package com.mobilecomputing.group3.mcproject;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view= inflater.inflate(R.layout.signup_fragment,container,false);
         Button setLoc=(Button) view.findViewById(R.id.locSelect);
         setLoc.setOnClickListener(this);
@@ -174,7 +176,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
 
 }
 
-
+    public void update(Address curraddr){
+        EditText t=(EditText) view.findViewById(R.id.locationbox);
+        t.setText(curraddr.getAddressLine(0)+", "+curraddr.getAddressLine(1)+" "+curraddr.getAddressLine(2)+" "+curraddr.getAddressLine(3));
+    }
 }
 
 

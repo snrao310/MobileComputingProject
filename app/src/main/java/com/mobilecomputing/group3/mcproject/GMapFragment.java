@@ -1,6 +1,7 @@
 package com.mobilecomputing.group3.mcproject;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -37,6 +38,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
 
     GoogleMap gmap;
     View view;
+    LatLng currPos;
+    Address curraddr;
+    OnLocationSetListener onLocationSetListener;
 
     @Nullable
     @Override
@@ -93,13 +97,30 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 gmap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                curraddr=address;
             }
         }
 
         else if (v.getId()==R.id.selectBut)
         {
-            if(getActivity().getFragmentManager().getBackStackEntryCount() != 0 )
-                    getActivity().getFragmentManager().popBackStack();
+            if(getActivity().getFragmentManager().getBackStackEntryCount() != 0 ) {
+                getActivity().getFragmentManager().popBackStackImmediate();
+                onLocationSetListener.setLoc(curraddr);
+            }
         }
+    }
+
+
+
+    public interface OnLocationSetListener{
+        public void setLoc(Address s);
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        try{
+            onLocationSetListener=(OnLocationSetListener) activity;
+        }catch (Exception e){}
     }
 }

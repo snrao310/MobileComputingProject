@@ -3,14 +3,15 @@ package com.mobilecomputing.group3.mcproject;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.location.Address;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements GMapFragment.OnLocationSetListener{
     GMapFragment mapFragment;
-
+    SignupFragment signupFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,9 +19,9 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         FragmentManager fragmentManager= getFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        SignupFragment signupFragment=new SignupFragment();
-        fragmentTransaction.add(R.id.content_frame, signupFragment);
-        fragmentTransaction.addToBackStack(null);
+        signupFragment=new SignupFragment();
+        fragmentTransaction.add(R.id.content_frame, signupFragment, "TRY");
+        fragmentTransaction.addToBackStack("TRY");
         fragmentTransaction.commit();
 //
 //        Button setLoc=(Button) findViewById(R.id.locSelect);
@@ -51,4 +52,8 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void setLoc(Address s) {
+        signupFragment.update(s);
+    }
 }
