@@ -35,6 +35,15 @@
             android:layout_below="@+id/searchButton"
             class="com.google.android.gms.maps.MapFragment"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mapfrag"
+            android:layout_centerHorizontal="true"
+            android:text="Select"
+            android:layout_marginTop="10dp"
+            android:id="@+id/selectBut"/>
+
     </RelativeLayout>
 
 

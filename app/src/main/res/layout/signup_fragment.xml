@@ -108,4 +108,43 @@
         android:background="#ffffff"
         android:autoText="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        android:id="@+id/location"
+        android:layout_below="@+id/Phonebox"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/locationbox"
+        android:layout_marginTop="40dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Location"
+        android:id="@+id/locSelect"
+        android:layout_below="@+id/location"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/location" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/locationbox"
+        android:layout_below="@+id/locSelect"
+        android:layout_centerHorizontal="true"
+        android:hint="Your selected Location"
+        android:background="#ffffff" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/submit"
+        android:layout_below="@+id/locationbox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
 </RelativeLayout>

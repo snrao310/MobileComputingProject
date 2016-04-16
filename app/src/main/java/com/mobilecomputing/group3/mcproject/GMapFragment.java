@@ -2,6 +2,7 @@ package com.mobilecomputing.group3.mcproject;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -43,6 +44,8 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
         view= inflater.inflate(R.layout.map_fragment, container, false);
         Button sb=(Button) view.findViewById(R.id.searchButton);
         sb.setOnClickListener(this);
+        Button select=(Button) view.findViewById(R.id.selectBut);
+        select.setOnClickListener(this);
         return view;
     }
 
@@ -71,23 +74,32 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
 
     @Override
     public void onClick(View v) {
-        EditText location_tf = (EditText) view.findViewById(R.id.searchbox);
-        String location = location_tf.getText().toString();
-        List<Address> addressList = null;
-        if(location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(getActivity());
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
+
+        if (v.getId()==R.id.searchButton){
+            EditText location_tf = (EditText) view.findViewById(R.id.searchbox);
+            String location = location_tf.getText().toString();
+            List<Address> addressList = null;
+            if(location != null || !location.equals("")) {
+                Geocoder geocoder = new Geocoder(getActivity());
+                try {
+                    addressList = geocoder.getFromLocationName(location, 1);
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                gmap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
+        }
 
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            gmap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        else if (v.getId()==R.id.selectBut)
+        {
+            if(getActivity().getFragmentManager().getBackStackEntryCount() != 0 )
+                    getActivity().getFragmentManager().popBackStack();
         }
     }
 }
