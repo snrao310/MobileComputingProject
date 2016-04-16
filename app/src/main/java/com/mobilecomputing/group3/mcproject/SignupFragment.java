@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Created by snrao on 12/4/16.
@@ -22,16 +23,24 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         view= inflater.inflate(R.layout.signup_fragment,container,false);
         Button setLoc=(Button) view.findViewById(R.id.locSelect);
         setLoc.setOnClickListener(this);
+
+        Button signup=(Button) view.findViewById(R.id.submit);
+        signup.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        GMapFragment mapFragment = new GMapFragment();
-        fragmentTransaction.replace(R.id.content_frame, mapFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if (v.getId() == R.id.locSelect) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            GMapFragment mapFragment = new GMapFragment();
+            fragmentTransaction.replace(R.id.content_frame, mapFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        else if(v.getId()==R.id.submit){
+
+        }
     }
 }
