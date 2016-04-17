@@ -135,6 +135,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
+
             wr.flush();
 
 
