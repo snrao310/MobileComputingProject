@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.location.Address;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -72,6 +73,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
              eMail = email_field.getText().toString();
              pHone = phone_field.getText().toString();
 
+            /*
+
             try{
 
                 // CALL GetText method to make post method call
@@ -83,7 +86,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             }
 
 
-
+        */
 
 
 
@@ -94,9 +97,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-
-    public  void  GetText()  throws UnsupportedEncodingException
-    {
+    class FileUploader extends AsyncTask<String, Void, String> {
+    public  void  GetText()  throws UnsupportedEncodingException {
 
         // Create data variable for sent values to server
 
@@ -119,12 +121,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                 + "=" + URLEncoder.encode(pHone, "UTF-8");
 
         String text = "";
-        BufferedReader reader=null;
+        BufferedReader reader = null;
 
 
         // Send data
-        try
-        {
+        try {
             // Defined URL  where to send data
             URL url = new URL("http://10.143.128.43:3000/friends");
 
@@ -133,9 +134,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
+            wr.write(data);
             wr.flush();
-
 
 
             // Get the server response
@@ -144,35 +144,42 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             String line = null;
 
             // Read Server Response
-            while((line = reader.readLine()) != null)
-            {
+            while ((line = reader.readLine()) != null) {
                 // Append server response in string
                 sb.append(line + "\n");
             }
 
 
             text = sb.toString();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
 
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
 
                 reader.close();
+            } catch (Exception ex) {
             }
-
-            catch(Exception ex) {}
         }
 
         // Show response on activity
-      //  content.setText( text  );
+        //  content.setText( text  );
 
 
+    }
+        @Override
+        protected String doInBackground(String... params) {
 
+            try{
+
+                // CALL GetText method to make post method call
+                GetText();
+            }
+            catch(Exception ex)
+            {
+                // content.setText(" url exeption! " );
+            }
+            return null;
+        }
 
 }
 
