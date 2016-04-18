@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -87,12 +88,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
 
 
         */
-
-
-
-
-
-
+            FileUploader t=new FileUploader();
+            t.execute();
 
         }
     }
@@ -127,7 +124,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         // Send data
         try {
             // Defined URL  where to send data
-            URL url = new URL("http://10.143.128.43:3000/friends");
+            URL url = new URL("http://10.143.2.185:3000/friends");
 
             // Send POST data request
 
@@ -186,10 +183,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
 
     public void update(Address curraddr){
         EditText t=(EditText) view.findViewById(R.id.locationbox);
-        t.setText(curraddr.getAddressLine(0)+", "+curraddr.getAddressLine(1)+" "+curraddr.getAddressLine(2)+" "+curraddr.getAddressLine(3));
+        String addrlines=new String();
+        addrlines+=curraddr.getAddressLine(0);
+        if(curraddr.getAddressLine(1)!=null)
+            addrlines+=", "+curraddr.getAddressLine(1);
+        if(curraddr.getAddressLine(2)!=null)
+            addrlines+=", "+curraddr.getAddressLine(2);
+        if(curraddr.getAddressLine(3)!=null)
+            addrlines+=", "+curraddr.getAddressLine(3);
+        t.setText(addrlines);
     }
 }
-
-
-
-
