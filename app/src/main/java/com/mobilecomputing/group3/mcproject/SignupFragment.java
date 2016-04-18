@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,24 +28,24 @@ import java.net.URLEncoder;
 /**
  * Created by snrao on 12/4/16.
  */
-public class SignupFragment extends Fragment implements View.OnClickListener{
+public class SignupFragment extends Fragment implements View.OnClickListener {
 
     View view;
     Address addr;
 
 
-    String userName,passWord,selectedLocation ,eMail ,pHone ;
-   // TextView content;
+    String userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;
+    // TextView content;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view= inflater.inflate(R.layout.signup_fragment,container,false);
-        Button setLoc=(Button) view.findViewById(R.id.locSelect);
+        view = inflater.inflate(R.layout.signup_fragment, container, false);
+        Button setLoc = (Button) view.findViewById(R.id.locSelect);
         setLoc.setOnClickListener(this);
 
-        Button signup=(Button) view.findViewById(R.id.submit);
+        Button signup = (Button) view.findViewById(R.id.submit);
         signup.setOnClickListener(this);
         return view;
     }
@@ -58,141 +59,120 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             fragmentTransaction.replace(R.id.content_frame, mapFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        }
-        else if(v.getId()==R.id.submit){
-
+        } else if (v.getId() == R.id.submit) {
             EditText userName_field = (EditText) view.findViewById(R.id.usernamebox);
-            EditText passWord_field=(EditText) view.findViewById(R.id.passwdbox);
-            EditText selectedLocation_field=(EditText) view.findViewById(R.id.locationbox);
-            EditText email_field=(EditText) view.findViewById(R.id.emailbox);
-            EditText phone_field=(EditText) view.findViewById(R.id.Phonebox);
+            EditText passWord_field = (EditText) view.findViewById(R.id.passwdbox);
+            EditText confirmPassword_field = (EditText) view.findViewById(R.id.confpasswdbox);
+            EditText selectedLocation_field = (EditText) view.findViewById(R.id.locationbox);
+            EditText email_field = (EditText) view.findViewById(R.id.emailbox);
+            EditText phone_field = (EditText) view.findViewById(R.id.Phonebox);
+            EditText aoi_field = (EditText) view.findViewById(R.id.aoibox);
+            EditText skillset_field = (EditText) view.findViewById(R.id.skillsetbox);
 
+            userName = userName_field.getText().toString();
+            passWord = passWord_field.getText().toString();
+            confirmPassword = confirmPassword_field.getText().toString();
+            selectedLocation = addr.toString();
+            eMail = email_field.getText().toString();
+            pHone = phone_field.getText().toString();
+            aoi = aoi_field.getText().toString();
+            skillset = skillset_field.getText().toString();
 
-
-             userName = userName_field.getText().toString();
-             passWord = passWord_field.getText().toString();
-             selectedLocation = selectedLocation_field.getText().toString();
-             eMail = email_field.getText().toString();
-             pHone = phone_field.getText().toString();
-
-            /*
-
-            try{
-
-                // CALL GetText method to make post method call
-                GetText();
+            if (confirmPassword.equals(passWord)) {
+                FileUploader t = new FileUploader();
+                t.execute();
+            } else {
+                Toast.makeText(getActivity(), " Password did not match . Check the Password",
+                        Toast.LENGTH_SHORT).show();
             }
-            catch(Exception ex)
-            {
-               // content.setText(" url exeption! " );
-            }
-
-
-        */
-            FileUploader t=new FileUploader();
-            t.execute();
-
         }
     }
+
 
     class FileUploader extends AsyncTask<String, Void, String> {
-    public  void  GetText()  throws UnsupportedEncodingException {
-
-        // Create data variable for sent values to server
-
-        String data = URLEncoder.encode("username", "UTF-8")
-                + "=" + URLEncoder.encode(userName, "UTF-8");
-
-        data += "&" + URLEncoder.encode("email", "UTF-8") + "="
-                + URLEncoder.encode(passWord, "UTF-8");
-
-        data += "&" + URLEncoder.encode("latitude", "UTF-8")
-                + "=" + URLEncoder.encode(selectedLocation, "UTF-8");
-
-        data += "&" + URLEncoder.encode("longitude", "UTF-8")
-                + "=" + URLEncoder.encode(eMail, "UTF-8");
-
-        data += "&" + URLEncoder.encode("mail", "UTF-8")
-                + "=" + URLEncoder.encode(eMail, "UTF-8");
-
-        data += "&" + URLEncoder.encode("phone", "UTF-8")
-                + "=" + URLEncoder.encode(pHone, "UTF-8");
-
-        String text = "";
-        BufferedReader reader = null;
 
 
-        // Send data
-        try {
-            // Defined URL  where to send data
-            URL url = new URL("http://10.143.2.185:3000/friends");
+        public void GetText() throws UnsupportedEncodingException {
+            // Create data variable for sent values to server
+            String data = URLEncoder.encode("username", "UTF-8")
+                    + "=" + URLEncoder.encode(userName, "UTF-8");
 
-            // Send POST data request
+            data += "&" + URLEncoder.encode("password", "UTF-8") + "="
+                    + URLEncoder.encode(passWord, "UTF-8");
 
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
+            data += "&" + URLEncoder.encode("location", "UTF-8")
+                    + "=" + URLEncoder.encode(selectedLocation, "UTF-8");
 
-            wr.flush();
+            data += "&" + URLEncoder.encode("mail", "UTF-8")
+                    + "=" + URLEncoder.encode(eMail, "UTF-8");
 
+            data += "&" + URLEncoder.encode("phone", "UTF-8")
+                    + "=" + URLEncoder.encode(pHone, "UTF-8");
 
-            // Get the server response
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
+            data += "&" + URLEncoder.encode("aoi", "UTF-8")
+                    + "=" + URLEncoder.encode(aoi, "UTF-8");
 
-            // Read Server Response
-            while ((line = reader.readLine()) != null) {
-                // Append server response in string
-                sb.append(line + "\n");
-            }
+            data += "&" + URLEncoder.encode("skillset", "UTF-8")
+                    + "=" + URLEncoder.encode(skillset, "UTF-8");
 
+            String text = "";
+            BufferedReader reader = null;
 
-            text = sb.toString();
-        } catch (Exception ex) {
-
-        } finally {
+            // Send data
             try {
+                // Defined URL  where to send data
+                URL url = new URL("http://10.143.2.185:3000/friends");
 
-                reader.close();
-            } catch (Exception ex) {
+                // Send POST data request
+                URLConnection conn = url.openConnection();
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                // Get the server response
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line + "\n");
+                }
+                text = sb.toString();
+            } catch (Exception ex) {}
+            finally {
+                try {
+                    reader.close();
+                } catch (Exception ex) {
+                }
             }
         }
 
-        // Show response on activity
-        //  content.setText( text  );
-
-
-    }
         @Override
         protected String doInBackground(String... params) {
-
-            try{
-
+            try {
                 // CALL GetText method to make post method call
                 GetText();
-            }
-            catch(Exception ex)
-            {
-                // content.setText(" url exeption! " );
-            }
+            } catch (Exception ex) {}
             return null;
         }
+    }
 
-}
 
-    public void update(Address curraddr){
-        addr=curraddr;
-        EditText t=(EditText) view.findViewById(R.id.locationbox);
-        String addrlines=new String();
-        addrlines+=curraddr.getAddressLine(0);
-        if(curraddr.getAddressLine(1)!=null)
-            addrlines+=", "+curraddr.getAddressLine(1);
-        if(curraddr.getAddressLine(2)!=null)
-            addrlines+=", "+curraddr.getAddressLine(2);
-        if(curraddr.getAddressLine(3)!=null)
-            addrlines+=", "+curraddr.getAddressLine(3);
+
+    public void update(Address curraddr) {
+        addr = curraddr;
+        EditText t = (EditText) view.findViewById(R.id.locationbox);
+        String addrlines = new String();
+        addrlines += curraddr.getAddressLine(0);
+        if (curraddr.getAddressLine(1) != null)
+            addrlines += ", " + curraddr.getAddressLine(1);
+        if (curraddr.getAddressLine(2) != null)
+            addrlines += ", " + curraddr.getAddressLine(2);
+        if (curraddr.getAddressLine(3) != null)
+            addrlines += ", " + curraddr.getAddressLine(3);
         t.setText(addrlines);
     }
 }

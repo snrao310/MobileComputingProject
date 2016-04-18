@@ -111,9 +111,49 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Areas of Interest:"
+        android:id="@+id/aoi"
+        android:layout_below="@+id/Phonebox"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/Phonebox" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/aoibox"
+        android:layout_below="@+id/aoi"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:autoText="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Areas of Interest:"
+        android:id="@+id/skillset"
+        android:layout_below="@+id/aoibox"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/Phonebox" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/skillsetbox"
+        android:layout_below="@+id/skillset"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:autoText="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Location:"
         android:id="@+id/location"
-        android:layout_below="@+id/Phonebox"
+        android:layout_below="@+id/skillsetbox"
         android:layout_centerHorizontal="true"
         android:layout_alignLeft="@+id/locationbox"
         android:layout_marginTop="40dp" />
