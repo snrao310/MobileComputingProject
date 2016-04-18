@@ -34,7 +34,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     Address addr;
 
 
-    String userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;
+    String name, userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;
     // TextView content;
 
     @Nullable
@@ -68,9 +68,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             EditText phone_field = (EditText) view.findViewById(R.id.Phonebox);
             EditText aoi_field = (EditText) view.findViewById(R.id.aoibox);
             EditText skillset_field = (EditText) view.findViewById(R.id.skillsetbox);
+            EditText name_field = (EditText) view.findViewById(R.id.namebox);
 
             userName = userName_field.getText().toString();
             passWord = passWord_field.getText().toString();
+            name=name_field.getText().toString();
             confirmPassword = confirmPassword_field.getText().toString();
             selectedLocation = addr.toString();
             eMail = email_field.getText().toString();
@@ -99,6 +101,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
             data += "&" + URLEncoder.encode("password", "UTF-8") + "="
                     + URLEncoder.encode(passWord, "UTF-8");
+
+            data = URLEncoder.encode("name", "UTF-8")
+                    + "=" + URLEncoder.encode(name, "UTF-8");
 
             data += "&" + URLEncoder.encode("location", "UTF-8")
                     + "=" + URLEncoder.encode(selectedLocation, "UTF-8");
