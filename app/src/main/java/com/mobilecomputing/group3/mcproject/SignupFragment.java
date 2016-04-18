@@ -163,6 +163,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             } catch (Exception ex) {}
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            getActivity().finish();
+        }
     }
 
 
