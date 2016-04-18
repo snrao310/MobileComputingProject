@@ -143,7 +143,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="phone"
         android:ems="10"
         android:id="@+id/aoibox"
         android:layout_below="@+id/aoi"
@@ -154,7 +153,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Areas of Interest:"
+        android:text="Skill set:"
         android:id="@+id/skillset"
         android:layout_below="@+id/aoibox"
         android:layout_centerHorizontal="true"
@@ -163,7 +162,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="phone"
         android:ems="10"
         android:id="@+id/skillsetbox"
         android:layout_below="@+id/skillset"
