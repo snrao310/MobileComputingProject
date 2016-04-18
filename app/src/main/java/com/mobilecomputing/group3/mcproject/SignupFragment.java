@@ -30,6 +30,7 @@ import java.net.URLEncoder;
 public class SignupFragment extends Fragment implements View.OnClickListener{
 
     View view;
+    Address addr;
 
 
     String userName,passWord,selectedLocation ,eMail ,pHone ;
@@ -182,6 +183,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
 }
 
     public void update(Address curraddr){
+        addr=curraddr;
         EditText t=(EditText) view.findViewById(R.id.locationbox);
         String addrlines=new String();
         addrlines+=curraddr.getAddressLine(0);

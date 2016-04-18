@@ -17,21 +17,35 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profile_fragment"/>
+            android:id="@+id/profile_fragment"
+            android:layout_marginBottom="10dp"/>
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/requests_fragment"
+            android:layout_below="@id/profile_fragment"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/searchPartnerBut"
-            android:layout_below="@id/profile_fragment"
+            android:layout_below="@id/requests_fragment"
             android:layout_centerHorizontal="true"
             android:text="SEARCH NEW PARTNER"/>
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/search_result"
-            android:layout_below="@+id/searchPartnerBut"/>
+            android:id="@+id/filter_fragment"
+            android:layout_below="@id/searchPartnerBut"
+            android:layout_marginBottom="10dp"/>
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/result_fragment"
+            android:layout_below="@+id/filter_fragment"/>
 
 
     </RelativeLayout>
