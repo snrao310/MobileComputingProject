@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class SearchAdapter extends ArrayAdapter {
     private List list= new ArrayList();
+    private final int MAX_ENTRIES = 5;
 
     public SearchAdapter(Context context, int resource) {
         super(context, resource);
@@ -35,6 +36,7 @@ public class SearchAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
+//        return Math.min(MAX_ENTRIES, this.list.size());
         return this.list.size();
     }
 

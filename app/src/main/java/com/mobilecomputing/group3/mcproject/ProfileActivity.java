@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -11,12 +12,10 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+    }
 
-        FragmentManager fragmentManager= getFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        ProfileFragment frag = new ProfileFragment();
-        fragmentTransaction.add(R.id.profile_fragment, frag, "TRY2");
-        fragmentTransaction.addToBackStack("TRY2");
-        fragmentTransaction.commit();
+    void onSearchBtnClick(View view) {
+        FilterFragment filterFrag = new FilterFragment();
+        filterFrag.searchBtnClicked();
     }
 }
