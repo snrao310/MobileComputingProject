@@ -81,7 +81,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             skillset = skillset_field.getText().toString();
 
             if (confirmPassword.equals(passWord)) {
-                FileUploader t = new FileUploader();
+                SendInfo t = new SendInfo();
                 t.execute();
             } else {
                 Toast.makeText(getActivity(), " Password did not match . Check the Password",
@@ -91,10 +91,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    class FileUploader extends AsyncTask<String, Void, String> {
+    class SendInfo extends AsyncTask<String, Void, String> {
 
 
-        public void GetText() throws UnsupportedEncodingException {
+        public void sendRegInfo() throws UnsupportedEncodingException {
             // Create data variable for sent values to server
             String data = URLEncoder.encode("username", "UTF-8")
                     + "=" + URLEncoder.encode(userName, "UTF-8");
@@ -102,7 +102,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             data += "&" + URLEncoder.encode("password", "UTF-8") + "="
                     + URLEncoder.encode(passWord, "UTF-8");
 
-            data = URLEncoder.encode("name", "UTF-8")
+            data += "&" +URLEncoder.encode("name", "UTF-8")
                     + "=" + URLEncoder.encode(name, "UTF-8");
 
             data += "&" + URLEncoder.encode("location", "UTF-8")
@@ -126,7 +126,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             // Send data
             try {
                 // Defined URL  where to send data
-                URL url = new URL("http://10.143.2.185:3000/friends");
+                URL url = new URL("http://10.143.2.185:3000/register");
 
                 // Send POST data request
                 URLConnection conn = url.openConnection();
@@ -159,7 +159,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         protected String doInBackground(String... params) {
             try {
                 // CALL GetText method to make post method call
-                GetText();
+                sendRegInfo();
             } catch (Exception ex) {}
             return null;
         }

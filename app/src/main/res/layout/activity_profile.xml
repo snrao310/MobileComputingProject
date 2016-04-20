@@ -18,13 +18,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/profile_fragment"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:name="com.mobilecomputing.group3.mcproject.ProfileFragment"/>
 
+        <!--
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/requests_fragment"
-            android:layout_below="@id/profile_fragment"/>
+            android:layout_below="@id/profile_fragment"
+            android:name="com.mobilecomputing.group3.mcproject.RequestsFragment"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -39,15 +42,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/filter_fragment"
             android:layout_below="@id/searchPartnerBut"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:name="com.mobilecomputing.group3.mcproject.FilterFragment"/>
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/result_fragment"
-            android:layout_below="@+id/filter_fragment"/>
-
-
+            android:layout_below="@+id/filter_fragment"
+            android:name="com.mobilecomputing.group3.mcproject.ResultsFragment"/>
+-->
     </RelativeLayout>
 
 
