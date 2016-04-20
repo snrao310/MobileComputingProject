@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,29 +39,43 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
         Button btnSkills = (Button)view.findViewById(R.id.button2);
         btnArea.setOnClickListener(this);
         btnSkills.setOnClickListener(this);
-//
+
         users = new String[10];
-//
-//        if ( adapter == null ) {
-//            adapter = new SearchAdapter(getActivity(),R.layout.userlist);
-//        }
-//
-//        for(int i = 1; i<= 10; i++ )
-//        {
-//            SearchClass obj = new SearchClass("User #" + i);
-//            listview = (ListView) view.findViewById(R.id.listview);
-//            adapter.add(obj);
-//            users[i-1] = new String("User #" + i);
-//        }
-//
-//        if ( listview == null ) {
-//            listview.setAdapter(adapter);
-//        }
+
+        if ( adapter == null ) {
+            adapter = new SearchAdapter(getActivity(),R.layout.userlist);
+        }
+
+        for(int i = 1; i<= 10; i++ )
+        {
+            SearchClass obj = new SearchClass("User #" + i);
+            adapter.add(obj);
+            users[i-1] = new String("User #" + i);
+        }
+
+        if ( listview == null ) {
+            listview = (ListView) view.findViewById(R.id.listview);
+            listview.setAdapter(adapter);
+        }
 
 //        listview.setMinimumHeight(10 * 50);
-//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) listview.getLayoutParams();
-//        lp.height = 10 * 50;
-//        listview.setLayoutParams(lp);
+        ViewGroup.LayoutParams lp = listview.getLayoutParams();
+
+        int totalHeight = 0,
+                desiredWidth = View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        View v = null;
+
+        for ( int i = 0 ; i < adapter.getCount(); i++ ) {
+            v = adapter.getView(i, v, listview);
+            if ( i == 0 ) {
+                v.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+            v.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += v.getMeasuredHeight();
+        }
+
+        lp.height = (listview.getDividerHeight() * (adapter.getCount() - 1)) + totalHeight + 10;
+        listview.setLayoutParams(lp);
 //        listview.height
         return view;
     }
@@ -132,30 +147,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
     }
 
     public void searchBtnClicked() {
-//        Button btnArea = (Button)view.findViewById(R.id.button);
-//        Button btnSkills = (Button)view.findViewById(R.id.button2);
-//        btnArea.setOnClickListener(this);
-//        btnSkills.setOnClickListener(this);
 
-//        users = new String[10];
-
-        if ( adapter == null ) {
-            adapter = new SearchAdapter(getActivity(),R.layout.userlist);
-        }
-
-        for(int i = 1; i<= 10; i++ )
-        {
-            SearchClass obj = new SearchClass("User #" + i);
-            adapter.add(obj);
-            users[i-1] = new String("User #" + i);
-        }
-
-        if ( listview == null ) {
-            listview = (ListView) view.findViewById(R.id.listview);
-            listview.setAdapter(adapter);
-        }
-
-        view.invalidate();
     }
 
     /*

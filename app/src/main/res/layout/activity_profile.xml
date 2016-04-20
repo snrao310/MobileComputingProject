@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/filter_fragment"
             android:layout_below="@id/searchPartnerBut"
-            android:name="com.mobilecomputing.group3.mcproject.FilterFragment"/>
+            android:name="com.mobilecomputing.group3.mcproject.FilterFragment"
+             />
 
     </RelativeLayout>
 

@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
         public void getuserinfo() {
             try {
                 String username="abc";
-                String myurl = "http://10.143.2.185:3000/user/"+username;
+                String myurl = "http://localhost:3000/user/"+username;
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
