@@ -8,6 +8,7 @@ import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             // Send data
             try {
                 // Defined URL  where to send data
-                URL url = new URL("http://10.143.2.185:3000/friends");
+                URL url = new URL("http://192.168.0.34:3000/register");
 
                 // Send POST data request
                 URLConnection conn = url.openConnection();
@@ -146,7 +147,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     sb.append(line + "\n");
                 }
                 text = sb.toString();
-            } catch (Exception ex) {}
+            } catch (Exception ex) {
+                Log.i("[APPEXCEPTION]: ", ex.getMessage());
+            }
             finally {
                 try {
                     reader.close();
