@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -35,6 +36,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
 
     String name, userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;
+    double lat, lon;
     // TextView content;
 
     @Nullable
@@ -74,7 +76,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             passWord = passWord_field.getText().toString();
             name=name_field.getText().toString();
             confirmPassword = confirmPassword_field.getText().toString();
-            selectedLocation = addr.toString();
+            selectedLocation = selectedLocation_field.getText().toString();
+            lat=addr.getLatitude();
+            lon=addr.getLongitude();
             eMail = email_field.getText().toString();
             pHone = phone_field.getText().toString();
             aoi = aoi_field.getText().toString();
@@ -120,6 +124,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             data += "&" + URLEncoder.encode("skillset", "UTF-8")
                     + "=" + URLEncoder.encode(skillset, "UTF-8");
 
+            data += "&" + URLEncoder.encode("latitude", "UTF-8")
+                    + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8");
+
+            data += "&" + URLEncoder.encode("longitude", "UTF-8")
+                    + "=" + URLEncoder.encode(String.valueOf(lon), "UTF-8");
+
             String text = "";
             BufferedReader reader = null;
 
@@ -129,7 +139,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 URL url = new URL("http://10.143.2.185:3000/register");
 
                 // Send POST data request
-                URLConnection conn = url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+                //conn.connect();
                 conn.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);

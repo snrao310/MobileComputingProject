@@ -36,33 +36,37 @@ public class ProfileFragment extends Fragment {
 
     View view;
     JSONObject jobj;
+    TextView email,name,phone,loc,aoi,skillset;
+    JSONObject jsonObject;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_fragment_layout, container, false);
-        TextView email = (TextView) view.findViewById(R.id.pemail);
-        TextView name = (TextView) view.findViewById(R.id.pname);
-        TextView phone = (TextView) view.findViewById(R.id.phone);
-        TextView loc = (TextView) view.findViewById(R.id.ploc);
-        TextView aoi = (TextView) view.findViewById(R.id.paoi);
-        TextView skillset = (TextView) view.findViewById(R.id.pskills);
+        email = (TextView) view.findViewById(R.id.pemail);
+         name = (TextView) view.findViewById(R.id.pname);
+         phone = (TextView) view.findViewById(R.id.pphone);
+         loc = (TextView) view.findViewById(R.id.ploc);
+         aoi = (TextView) view.findViewById(R.id.paoi);
+         skillset = (TextView) view.findViewById(R.id.pskills);
+
+        String username=getActivity().getIntent().getExtras().get("username").toString();
 
         GetInfo f=new GetInfo();
-        f.execute();
+        f.execute(username);
         return view;
     }
 
 
     private class GetInfo extends AsyncTask<String, Void, String> {
 
-        public void getuserinfo() {
+        public void getuserinfo(String usern) {
             try {
-                String username="abc";
-                String myurl = "http://localhost:3000/user/"+username;
+                String myurl = "http://10.143.2.185:3000/user/"+usern;
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
                 connection.connect();
                 InputStream inputStream = connection.getInputStream();
 
@@ -77,24 +81,32 @@ public class ProfileFragment extends Fragment {
                 while ((line = r.readLine()) != null) {
                     total.append(line);
                 }
-                JSONObject jsonObject = new JSONObject(total.toString());
-                Log.i("SEE",line);
-                /*JSONArray array = new JSONArray(jsonObject.getString("aoi"));
-
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = new JSONObject(array.getString(i));
-                    User user = new User(obj.getString("name"), obj.getString("firstname"));
-                    users.add(user);
-                }*/
+                 jsonObject = new JSONObject(total.toString());
+                Log.i("SEE",jsonObject.getString("aoi"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return;
         }
 
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                name.setText(jsonObject.getString("name"));
+                email.append(jsonObject.getString("mail"));
+                phone.append(jsonObject.getString("phone"));
+                loc.append(jsonObject.getString("location"));
+                aoi.append(jsonObject.getString("aoi"));
+                skillset.append(jsonObject.getString("skillset"));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
         @Override
         protected String doInBackground(String... arg0) {
-            getuserinfo();
+            getuserinfo(arg0[0]);
             return null;
         }
     }

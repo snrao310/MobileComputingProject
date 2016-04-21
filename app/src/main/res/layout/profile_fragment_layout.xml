@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d4d1f6"
     android:orientation="vertical">
 
     <TextView
@@ -10,42 +9,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="NAME" />
+        android:text="NAME"
+        android:textStyle="bold"
+        android:capitalize="words"
+        android:textSize="28sp"/>
 
     <TextView
         android:id="@+id/pemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="email" />
+        android:layout_marginTop="10dp"
+        android:text="Email: "
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/pphone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="phone" />
+        android:layout_marginTop="10dp"
+        android:text="Phone: "
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ploc"
-        android:layout_marginTop="30dp"
-        android:text="loc"/>
+        android:layout_marginTop="10dp"
+        android:text="Location: "
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="aoi"
+        android:text="Areas of Interest: "
         android:id="@+id/paoi"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="skillset"
-        android:id="@+id/pskills"/>
+        android:layout_marginTop="10dp"
+        android:text="Skillset: "
+        android:id="@+id/pskills"
+        android:textStyle="bold"/>
 
 
 </LinearLayout>
