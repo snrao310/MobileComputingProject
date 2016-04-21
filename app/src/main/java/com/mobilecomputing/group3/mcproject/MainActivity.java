@@ -24,6 +24,7 @@ import java.nio.Buffer;
 public class MainActivity extends AppCompatActivity {
 
     String username,passwd;
+    String ip="192.168.0.12";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 // Defined URL  where to send data
-                URL url = new URL("http://10.143.2.185:3000/check");
+                URL url = new URL("http://"+ip+":3000/check");
 
                 // Send POST data request
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();

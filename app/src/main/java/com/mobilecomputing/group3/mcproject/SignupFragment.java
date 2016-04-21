@@ -33,6 +33,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
     View view;
     Address addr;
+    String ip="192.168.0.12";
 
 
     String name, userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;
@@ -136,7 +137,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             // Send data
             try {
                 // Defined URL  where to send data
-                URL url = new URL("http://10.143.2.185:3000/register");
+                URL url = new URL("http://"+ip+":3000/register");
 
                 // Send POST data request
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();

@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment {
     JSONObject jobj;
     TextView email,name,phone,loc,aoi,skillset;
     JSONObject jsonObject;
+    String ip="192.168.0.12";
 
     @Nullable
     @Override
@@ -62,7 +63,7 @@ public class ProfileFragment extends Fragment {
 
         public void getuserinfo(String usern) {
             try {
-                String myurl = "http://10.143.2.185:3000/user/"+usern;
+                String myurl = "http://"+ip +":3000/user/"+usern;
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
