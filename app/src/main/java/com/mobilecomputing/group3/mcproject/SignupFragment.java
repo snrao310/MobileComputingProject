@@ -8,6 +8,7 @@ import android.location.Address;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +105,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
     class SendInfo extends AsyncTask<String, Void, String> {
 
+        String text="";
 
         public void sendRegInfo() throws UnsupportedEncodingException {
             // Create data variable for sent values to server
@@ -137,7 +139,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             data += "&" + URLEncoder.encode("longitude", "UTF-8")
                     + "=" + URLEncoder.encode(String.valueOf(lon), "UTF-8");
 
-            String text = "";
             BufferedReader reader = null;
 
             // Send data
@@ -163,7 +164,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 // Read Server Response
                 while ((line = reader.readLine()) != null) {
                     // Append server response in string
-                    sb.append(line + "\n");
+                    sb.append(line);
                 }
                 text = sb.toString();
             } catch (Exception ex) {}
@@ -186,8 +187,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getActivity(),"Sign up Successful. Please Log in now",Toast.LENGTH_LONG).show();
-            getActivity().finish();
+            if(text.equals("Username exists")){
+                Toast.makeText(getActivity(),"Username already exists. Use a different username",Toast.LENGTH_LONG).show();
+            }
+            else {
+                Log.i("ABC", text);
+                Toast.makeText(getActivity(), "Sign up Successful. Please Log in now", Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
         }
     }
 
