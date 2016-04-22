@@ -1,37 +1,30 @@
 package com.mobilecomputing.group3.mcproject;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 
 /**
  * Created by snrao on 4/18/16.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     View view;
@@ -39,6 +32,7 @@ public class ProfileFragment extends Fragment {
     TextView email,name,phone,loc,aoi,skillset;
     JSONObject jsonObject;
     String ip="192.168.0.12";
+    String username;
 
     @Nullable
     @Override
@@ -51,11 +45,31 @@ public class ProfileFragment extends Fragment {
          aoi = (TextView) view.findViewById(R.id.paoi);
          skillset = (TextView) view.findViewById(R.id.pskills);
 
-        String username=getActivity().getIntent().getExtras().get("username").toString();
+        username=getActivity().getIntent().getExtras().get("username").toString();
+
+        Button editprof=(Button) view.findViewById(R.id.editprof);
+        editprof.setOnClickListener(this);
 
         GetInfo f=new GetInfo();
         f.execute(username);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.editprof){
+            Intent intent=new Intent(getActivity(),EditProfileActivity.class);
+            Bundle b=getActivity().getIntent().getExtras();
+            intent.putExtras(b);
+            int reqcode=1;
+            startActivityForResult(intent,reqcode);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        GetInfo f=new GetInfo();
+        f.execute(username);
     }
 
 
@@ -95,11 +109,11 @@ public class ProfileFragment extends Fragment {
         protected void onPostExecute(String s) {
             try {
                 name.setText(jsonObject.getString("name"));
-                email.append(jsonObject.getString("mail"));
-                phone.append(jsonObject.getString("phone"));
-                loc.append(jsonObject.getString("location"));
-                aoi.append(jsonObject.getString("aoi"));
-                skillset.append(jsonObject.getString("skillset"));
+                email.setText("Emailyy: " + jsonObject.getString("mail"));
+                phone.setText("Phone: " + jsonObject.getString("phone"));
+                loc.setText("Location: " + jsonObject.getString("location"));
+                aoi.setText("Areas of Interest: " + jsonObject.getString("aoi"));
+                skillset.setText("Skillset: "+jsonObject.getString("skillset"));
             }catch(Exception e){
                 e.printStackTrace();
             }

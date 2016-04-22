@@ -14,7 +14,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
     }
 
-    void onSearchBtnClick(View view) {
+    public void onSearchBtnClick(View view) {
         FilterFragment filterFrag = new FilterFragment();
         filterFrag.searchBtnClicked();
     }

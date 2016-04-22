@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#bd9494">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Name:"
+            android:id="@+id/new_name"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_namebox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_namebox"
+            android:layout_below="@+id/new_name"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Password:"
+            android:id="@+id/new_passwd"
+            android:layout_below="@+id/new_namebox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_passwdbox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/new_passwdbox"
+            android:layout_below="@+id/new_passwd"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm New Password:"
+            android:id="@+id/new_confpasswd"
+            android:layout_below="@+id/new_passwdbox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_passwdbox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/new_confpasswdbox"
+            android:layout_below="@+id/new_confpasswd"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Email Address:"
+            android:id="@+id/new_email"
+            android:layout_below="@+id/new_confpasswdbox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_emailbox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/new_emailbox"
+            android:layout_below="@+id/new_email"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Phone:"
+            android:id="@+id/new_phone"
+            android:layout_below="@+id/new_emailbox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_Phonebox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/new_Phonebox"
+            android:layout_below="@+id/new_phone"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to Areas of Interest:"
+            android:id="@+id/new_aoi"
+            android:layout_below="@+id/new_Phonebox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_Phonebox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/new_aoibox"
+            android:layout_below="@+id/new_aoi"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to Skill set:"
+            android:id="@+id/new_skillset"
+            android:layout_below="@+id/new_aoibox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_Phonebox" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/new_skillsetbox"
+            android:layout_below="@+id/new_skillset"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff"
+            android:autoText="true"
+            android:hint="Type to change info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:id="@+id/new_location"
+            android:layout_below="@+id/new_skillsetbox"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_locationbox"
+            android:layout_marginTop="40dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Press to change Location"
+            android:id="@+id/new_locSelect"
+            android:layout_below="@+id/new_location"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/new_location" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/new_locationbox"
+            android:layout_below="@+id/new_locSelect"
+            android:layout_centerHorizontal="true"
+            android:hint="Your selected Location"
+            android:background="#ffffff" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm Changes"
+            android:id="@+id/new_submit"
+            android:layout_below="@+id/new_locationbox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp" />
+    </RelativeLayout>
+
+</ScrollView>

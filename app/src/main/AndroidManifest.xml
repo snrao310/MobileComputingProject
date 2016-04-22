@@ -44,9 +44,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCLYk0A0pvee--2QzM5GQGz3GDdcy99CvA" />
 
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".FilterFragment"></activity>
-
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".FilterFragment" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

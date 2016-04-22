@@ -12,7 +12,8 @@
         android:text="NAME"
         android:textStyle="bold"
         android:capitalize="words"
-        android:textSize="28sp"/>
+        android:textSize="28sp"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/pemail"
@@ -53,6 +54,13 @@
         android:text="Skillset: "
         android:id="@+id/pskills"
         android:textStyle="bold"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Information"
+        android:id="@+id/editprof"
+        android:layout_gravity="center"/>
 
 
 </LinearLayout>
