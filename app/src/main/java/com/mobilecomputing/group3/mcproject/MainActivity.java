@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
             BufferedReader reader=null;
 
-            u = "suresh";
-            p = "s";
-
-
             String data = URLEncoder.encode("username", "UTF-8")
                     + "=" + URLEncoder.encode(u, "UTF-8");
             data += "&" + URLEncoder.encode("password", "UTF-8")
