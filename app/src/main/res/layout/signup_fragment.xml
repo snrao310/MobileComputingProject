@@ -191,9 +191,9 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/locationbox"
+        android:editable="false"
         android:layout_below="@+id/locSelect"
         android:layout_centerHorizontal="true"
         android:hint="Your selected Location"

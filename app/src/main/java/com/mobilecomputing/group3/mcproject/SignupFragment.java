@@ -78,8 +78,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             name=name_field.getText().toString();
             confirmPassword = confirmPassword_field.getText().toString();
             selectedLocation = selectedLocation_field.getText().toString();
-            lat=addr.getLatitude();
-            lon=addr.getLongitude();
+            if(!selectedLocation.equals("")) {
+                lat = addr.getLatitude();
+                lon = addr.getLongitude();
+            }
             eMail = email_field.getText().toString();
             pHone = phone_field.getText().toString();
             aoi = aoi_field.getText().toString();
@@ -184,6 +186,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String s) {
+            Toast.makeText(getActivity(),"Sign up Successful. Please Log in now",Toast.LENGTH_LONG).show();
             getActivity().finish();
         }
     }

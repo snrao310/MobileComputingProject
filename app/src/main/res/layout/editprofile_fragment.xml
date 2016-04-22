@@ -180,11 +180,11 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/new_locationbox"
             android:layout_below="@+id/new_locSelect"
             android:layout_centerHorizontal="true"
+            android:editable="false"
             android:hint="Your selected Location"
             android:background="#ffffff" />
 

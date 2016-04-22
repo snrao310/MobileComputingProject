@@ -55,7 +55,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             GMapFragment mapFragment = new GMapFragment();
-            fragmentTransaction.replace(R.id.content_frame, mapFragment);
+            fragmentTransaction.replace(R.id.editp_content_frame, mapFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else if (v.getId() == R.id.new_submit) {
@@ -194,7 +194,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     public void update(Address curraddr) {
         addr = curraddr;
-        EditText t = (EditText) view.findViewById(R.id.locationbox);
+        EditText t = (EditText) view.findViewById(R.id.new_locationbox);
         String addrlines = new String();
         addrlines += curraddr.getAddressLine(0);
         if (curraddr.getAddressLine(1) != null)
