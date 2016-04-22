@@ -34,6 +34,11 @@ public class SearchAdapter extends ArrayAdapter {
         Button add;
     }
 
+    public void clearAll() {
+        super.clear();
+        list.clear();
+    }
+
     @Override
     public int getCount() {
 //        return Math.min(MAX_ENTRIES, this.list.size());

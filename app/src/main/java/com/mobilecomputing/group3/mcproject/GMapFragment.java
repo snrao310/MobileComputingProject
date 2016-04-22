@@ -57,8 +57,9 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag);
-        mapFragment.getMapAsync(this);
+//        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag);
+        MapFragment mF = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag);
+        mF.getMapAsync(this);
     }
 
     @Override

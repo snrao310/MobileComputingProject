@@ -24,7 +24,7 @@ import java.nio.Buffer;
 public class MainActivity extends AppCompatActivity {
 
     String username,passwd;
-    String ip="192.168.0.12";
+    String ip="192.168.0.34";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         public void verify(String u,String p) throws UnsupportedEncodingException {
 
             BufferedReader reader=null;
+
+            u = "suresh";
+            p = "s";
 
 
             String data = URLEncoder.encode("username", "UTF-8")

@@ -1,6 +1,8 @@
 package com.mobilecomputing.group3.mcproject;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Filter;
 
 /**
  * Created by snrao on 4/18/16.
@@ -31,7 +34,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     JSONObject jobj;
     TextView email,name,phone,loc,aoi,skillset;
     JSONObject jsonObject;
-    String ip="192.168.0.12";
+    String ip="192.168.0.34";
     String username;
 
     @Nullable
@@ -55,6 +58,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         GetInfo f=new GetInfo();
         f.execute(username);
+
         return view;
     }
 
@@ -121,11 +125,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(String s) {
             try {
                 name.setText(jsonObject.getString("name"));
-                email.setText("Emailyy: " + jsonObject.getString("mail"));
+                email.setText("Email: " + jsonObject.getString("mail"));
                 phone.setText("Phone: " + jsonObject.getString("phone"));
                 loc.setText("Location: " + jsonObject.getString("location"));
                 aoi.setText("Areas of Interest: " + jsonObject.getString("aoi"));
-                skillset.setText("Skillset: "+jsonObject.getString("skillset"));
+                skillset.setText("Skill set: "+jsonObject.getString("skillset"));
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FilterFragment ff = (FilterFragment) fragmentManager.findFragmentById(R.id.filter_fragment);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(ff).commit();
             }catch(Exception e){
                 e.printStackTrace();
             }

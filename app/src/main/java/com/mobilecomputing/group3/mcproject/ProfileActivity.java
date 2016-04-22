@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class ProfileActivity extends AppCompatActivity {
+    boolean b = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +16,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void onSearchBtnClick(View view) {
-        FilterFragment filterFrag = new FilterFragment();
-        filterFrag.searchBtnClicked();
+        FragmentManager fragmentManager = getFragmentManager();
+        FilterFragment ff = (FilterFragment) fragmentManager.findFragmentById(R.id.filter_fragment);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if ( b ) {
+            fragmentTransaction.show(ff).commit();
+            b = false;
+        } else {
+            fragmentTransaction.hide(ff).commit();
+            b = true;
+        }
     }
 }
