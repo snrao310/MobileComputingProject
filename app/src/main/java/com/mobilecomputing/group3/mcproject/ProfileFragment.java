@@ -50,6 +50,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Button editprof=(Button) view.findViewById(R.id.editprof);
         editprof.setOnClickListener(this);
 
+        Button myteam=(Button) view.findViewById(R.id.myteam);
+        myteam.setOnClickListener(this);
+
         GetInfo f=new GetInfo();
         f.execute(username);
         return view;
@@ -63,6 +66,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             intent.putExtras(b);
             int reqcode=1;
             startActivityForResult(intent,reqcode);
+        }
+
+        else if(v.getId()==R.id.myteam){
+            Intent intent=new Intent(getActivity(),TeamActivity.class);
+            Bundle b=getActivity().getIntent().getExtras();
+            intent.putExtras(b);
+            //int reqcode=1;
+            //startActivityForResult(intent,reqcode);
+            startActivity(intent);
         }
     }
 

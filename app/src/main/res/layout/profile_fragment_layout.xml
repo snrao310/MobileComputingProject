@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="15dp">
 
     <TextView
         android:id="@+id/pname"
@@ -58,9 +59,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="My Team"
+        android:textSize="10dp"
+        android:id="@+id/myteam"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Edit Information"
         android:id="@+id/editprof"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:textSize="10sp"/>
 
 
 </LinearLayout>

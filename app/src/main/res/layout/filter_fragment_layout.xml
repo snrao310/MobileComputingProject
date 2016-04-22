@@ -44,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/someid"
-        android:clickable="false"
         android:layout_marginBottom="20dp"/>
 
 
