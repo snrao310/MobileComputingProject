@@ -1,5 +1,6 @@
 package com.mobilecomputing.group3.mcproject;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 
 public class ProfileActivity extends AppCompatActivity {
     boolean b = true;
+    boolean rb=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,20 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             fragmentTransaction.hide(ff).commit();
             b = true;
+        }
+    }
+
+
+    public void onReqBtnClick(View view) {
+        FragmentManager fragmentManager = getFragmentManager();
+        RequestsFragment rf = (RequestsFragment) fragmentManager.findFragmentById(R.id.requests_fragment);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if ( rb ) {
+            fragmentTransaction.show(rf).commit();
+            rb = false;
+        } else {
+            fragmentTransaction.hide(rf).commit();
+            rb = true;
         }
     }
 }

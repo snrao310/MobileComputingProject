@@ -34,7 +34,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
     View view;
     Address addr;
-    String ip="192.168.0.34";
+    String ip=new IP().getIP();
 
 
     String name, userName, passWord, selectedLocation, eMail, pHone, confirmPassword, aoi, skillset;

@@ -34,7 +34,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     JSONObject jobj;
     TextView email,name,phone,loc,aoi,skillset;
     JSONObject jsonObject;
-    String ip="192.168.0.34";
+    String ip=new IP().getIP();
     String username;
 
     @Nullable
@@ -128,13 +128,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 email.setText("Email: " + jsonObject.getString("mail"));
                 phone.setText("Phone: " + jsonObject.getString("phone"));
                 loc.setText("Location: " + jsonObject.getString("location"));
-                aoi.setText("Areas of Interest: " + jsonObject.getString("aoi"));
-                skillset.setText("Skill set: "+jsonObject.getString("skillset"));
+                aoi.setText("Areas of Interest: " + jsonObject.getString("aoi").replace("[","").replace("\"","").replace("]",""));
+                skillset.setText("Skill set: "+jsonObject.getString("skillset").replace("[","").replace("\"","").replace("]",""));
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FilterFragment ff = (FilterFragment) fragmentManager.findFragmentById(R.id.filter_fragment);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(ff).commit();
+
+                RequestsFragment rf = (RequestsFragment) fragmentManager.findFragmentById(R.id.requests_fragment);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(rf).commit();
             }catch(Exception e){
                 e.printStackTrace();
             }

@@ -21,20 +21,29 @@
             android:layout_marginBottom="10dp"
             android:name="com.mobilecomputing.group3.mcproject.ProfileFragment"/>
 
-        <!--
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewRequests"
+            android:layout_below="@id/profile_fragment"
+            android:layout_centerHorizontal="true"
+            android:text="View Received Requests"
+            android:onClick="onReqBtnClick" />
+
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/requests_fragment"
-            android:layout_below="@id/profile_fragment"
-            android:name="com.mobilecomputing.group3.mcproject.RequestsFragment"/>
-        -->
+            android:layout_below="@id/viewRequests"
+            android:name="com.mobilecomputing.group3.mcproject.RequestsFragment" />
+
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/searchPartnerBut"
-            android:layout_below="@id/profile_fragment"
+            android:layout_below="@id/requests_fragment"
             android:layout_centerHorizontal="true"
             android:text="SEARCH NEW PARTNER"
             android:onClick="onSearchBtnClick"/>

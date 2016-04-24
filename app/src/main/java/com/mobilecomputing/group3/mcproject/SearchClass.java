@@ -5,17 +5,24 @@ package com.mobilecomputing.group3.mcproject;
  */
 public class SearchClass {
     String username;
+    String name;
 
     public String getUsername() {
         return username;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
+    public void setName(String name){this.name=name;}
 
-    public SearchClass(String username) {
+    public SearchClass(String name,String username) {
         super();
+        setName(name);
         setUsername(username);
     }
 }

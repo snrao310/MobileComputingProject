@@ -24,7 +24,7 @@ import java.nio.Buffer;
 public class MainActivity extends AppCompatActivity {
 
     String username,passwd;
-    String ip="192.168.0.34";
+    String ip=new IP().getIP();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,5 +123,5 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-//need to check if anyone with same username exists while creating user
-//need to include team members in schema
+
+//need to change send request to request send in button even when logged in again

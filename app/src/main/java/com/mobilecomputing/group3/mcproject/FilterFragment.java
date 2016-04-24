@@ -28,11 +28,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class FilterFragment extends Fragment implements View.OnClickListener {
+public class FilterFragment extends Fragment implements View.OnClickListener{
 
     ListView listview;
     String[] users;
@@ -41,9 +42,10 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
     JSONObject jsonObject;
     JSONArray userList;
 
-    HashSet<String> areaSet, skillSet, userSet, resultSet;
+    HashSet<String> areaSet, skillSet, userSet;
+    HashSet<JSONObject> resultSet;
     View view;
-    String ip = "192.168.0.34";
+    String ip=new IP().getIP();
 
     boolean isChecked[];
     SearchAdapter adapter;
@@ -79,13 +81,13 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
             onFilterSkill(v); // Show Skills filter dialog
         }
 
-        else if ( v.getId() == R.id.searchPartnerBut ) {
-            showSearchResults(v); // Show the search results
-        }
-
-        else {
-            // Anything else I need to handle here?
-        }
+//        else if ( v.getId() == R.id.searchPartnerBut ) {
+//            showSearchResults(v); // Show the search results
+//        }
+//
+//        else {
+//            // Anything else I need to handle here?
+//        }
 
     }
 
@@ -159,7 +161,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
 
     public void searchAndRefresh(List skills, List aoi, int which) {
         JSONObject temp;
-        resultSet = new HashSet<>();
+        resultSet = new HashSet<JSONObject>();
         for ( int i = 0; i < userList.length(); i++ ) {
             // Check if they have the skills and aoi
             try {
@@ -170,14 +172,14 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                 if ( which == 0 ) {
                     for ( int k = 0; k < aoi.size(); k++ ) {
                         if ( t_aoi.contains(aoi.get(k).toString()) ) {
-                            resultSet.add(temp.getString("name"));
+                            resultSet.add(temp);
                             break;
                         }
                     }
                 } else {
                     for ( int k = 0; k < skills.size(); k++ ) {
                         if ( t_skills.contains(skills.get(k).toString()) ) {
-                            resultSet.add(temp.getString("name"));
+                            resultSet.add(temp);
                             break;
                         }
                     }
@@ -194,7 +196,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
 
         Iterator res = resultSet.iterator();
         while ( res.hasNext() ) {
-            adapter.add(new SearchClass(res.next().toString()));
+            JSONObject j=(JSONObject) res.next();
+            try {
+                adapter.add(new SearchClass(j.getString("name"), j.getString("username")));
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
         ((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
     }
@@ -270,10 +277,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
     public void populateAllUsers() {
 //        users = new String[10];
 
-        if ( adapter == null ) {
-            adapter = new SearchAdapter(getActivity(),R.layout.userlist);
-        }
-
         GetInfo info = new GetInfo();
         info.execute();
 
@@ -317,7 +320,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
 
         public void getAllUsers() {
             try {
-                String myurl = "http://"+ip +":3000/friends";
+                String myurl = "http://"+ip +":3000/users";
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -349,10 +352,17 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(String s) {
             try {
-                userList = jsonObject.getJSONArray("friends");
+                userList = jsonObject.getJSONArray("users");
                 userSet = new HashSet(userList.length());
                 areaSet = new HashSet<>();
                 skillSet = new HashSet<>();
+
+
+                if ( adapter == null ) {
+                    String userName1=getActivity().getIntent().getExtras().get("username").toString();
+                    adapter = new SearchAdapter(getActivity(),R.layout.userlist,userName1);
+                }
+
                 for ( int i = 0; i < userList.length(); i++ ) {
                     // Add all available users, areas of interest and skills here
 
@@ -363,7 +373,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                     JSONArray arr_skills = temp.getJSONArray("skillset");
 
                     userSet.add(temp.get("name").toString());
-                    SearchClass obj = new SearchClass(temp.get("name").toString());
+                    SearchClass obj = new SearchClass(temp.get("name").toString(),temp.get("username").toString());
                     adapter.add(obj);
 
                     for ( int j = 0; j < arr_area.length(); j++ ) {
@@ -377,8 +387,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
 
                 Log.i("HERE:", "HERE");
                 getSearchResults();
-
-//                adapter.notifyDataSetChanged();
             }catch(Exception e){
                 e.printStackTrace();
             }
