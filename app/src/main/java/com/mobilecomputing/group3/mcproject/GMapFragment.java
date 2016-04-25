@@ -9,9 +9,11 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +58,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MapFragment mapFragment = null;
 
-        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag);
-//        MapFragment mF = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag);
+        int apiVersion = android.os.Build.VERSION.SDK_INT;
+        if ( apiVersion > Build.VERSION_CODES.KITKAT) {
+            mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag);
+        } else {
+            mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag);
+        }
+
         mapFragment.getMapAsync(this);
     }
 
