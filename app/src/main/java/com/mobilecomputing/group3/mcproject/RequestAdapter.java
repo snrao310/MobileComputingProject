@@ -34,7 +34,7 @@ public class RequestAdapter extends  ArrayAdapter{
         private final int MAX_ENTRIES = 5;
         String userName2,userName1;
         String ip=new IP().getIP();
-        Button globalAcceptButton, globalRejectButton;
+        Button globalSelectedButton, globalOtherButton;
 
         public RequestAdapter(Context context, int resource, String userName1) {
             super(context, R.layout.requestlist);
@@ -96,13 +96,30 @@ public class RequestAdapter extends  ArrayAdapter{
                 @Override
                 public void onClick(View v) {
                     try {
-                        globalAcceptButton=holder.accept;
-                        globalRejectButton=holder.reject;
+                        globalSelectedButton=holder.accept;
+                        globalOtherButton=holder.reject;
 //                      Toast.makeText(getContext(), userList.getJSONObject(position).get("username").toString(), Toast.LENGTH_LONG).show();
                         SearchClass FR=(SearchClass) getItem(position);
                         userName2=FR.getUsername();
                         SendInfo s=new SendInfo();
-                        s.execute();
+                        s.execute("accept");
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            holder.reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        globalSelectedButton=holder.reject;
+                        globalOtherButton=holder.accept;
+//                      Toast.makeText(getContext(), userList.getJSONObject(position).get("username").toString(), Toast.LENGTH_LONG).show();
+                        SearchClass FR=(SearchClass) getItem(position);
+                        userName2=FR.getUsername();
+                        SendInfo s=new SendInfo();
+                        s.execute("reject");
                     }catch (Exception ex){
                         ex.printStackTrace();
                     }
@@ -133,13 +150,13 @@ public class RequestAdapter extends  ArrayAdapter{
 
             String text="";
 
-            public void sendReqInfo() throws UnsupportedEncodingException {
+            public void sendAccInfo() throws UnsupportedEncodingException {
                 // Create data variable for sent values to server
                 String data = URLEncoder.encode("fromUsername", "UTF-8")
-                        + "=" + URLEncoder.encode(userName1, "UTF-8");
+                        + "=" + URLEncoder.encode(userName2, "UTF-8");
 
                 data += "&" + URLEncoder.encode("toUsername", "UTF-8") + "="
-                        + URLEncoder.encode(userName2, "UTF-8");
+                        + URLEncoder.encode(userName1, "UTF-8");
 
                 BufferedReader reader = null;
 
@@ -178,27 +195,81 @@ public class RequestAdapter extends  ArrayAdapter{
                 }
             }
 
+
+            public void sendRejInfo() throws UnsupportedEncodingException {
+                // Create data variable for sent values to server
+                String data = URLEncoder.encode("fromUsername", "UTF-8")
+                        + "=" + URLEncoder.encode(userName2, "UTF-8");
+
+                data += "&" + URLEncoder.encode("toUsername", "UTF-8") + "="
+                        + URLEncoder.encode(userName1, "UTF-8");
+
+                BufferedReader reader = null;
+
+                // Send data
+                try {
+                    // Defined URL  where to send data
+                    URL url = new URL("http://"+ip+":3000/reject");
+
+                    // Send POST data request
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+                    //conn.connect();
+                    conn.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                    wr.write(data);
+                    wr.flush();
+
+                    // Get the server response
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+
+                    // Read Server Response
+                    while ((line = reader.readLine()) != null) {
+                        // Append server response in string
+                        sb.append(line);
+                    }
+                    text = sb.toString();
+                } catch (Exception ex) {}
+                finally {
+                    try {
+                        reader.close();
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+
             @Override
             protected String doInBackground(String... params) {
                 try {
                     // CALL GetText method to make post method call
-                    sendReqInfo();
+                    if(params[0].equals("accept"))
+                        sendAccInfo();
+                    else if(params[0].equals("reject"))
+                        sendRejInfo();
                 } catch (Exception ex) {}
                 return null;
             }
 
             @Override
             protected void onPostExecute(String s) {
-                if(text.equals("0")){
-                    Toast.makeText(getContext(),"Error. Could not Accept",Toast.LENGTH_LONG).show();
+                if(text.equals("rejected")){
+                    Log.i("ABC", text);
+                    Toast.makeText(getContext(), "Rejected", Toast.LENGTH_LONG).show();
+                    globalSelectedButton.setText("Rejected");
+                    globalSelectedButton.setClickable(false);
+                    globalSelectedButton.setBackgroundColor(Color.LTGRAY);
+                    globalOtherButton.setVisibility(View.GONE);
                 }
-                else {
+                else if(text.equals("accepted")) {
                     Log.i("ABC", text);
                     Toast.makeText(getContext(), "Accepted", Toast.LENGTH_LONG).show();
-                    globalAcceptButton.setText("Accepted");
-                    globalAcceptButton.setClickable(false);
-                    globalAcceptButton.setBackgroundColor(Color.LTGRAY);
-                    globalRejectButton.setVisibility(View.GONE);
+                    globalSelectedButton.setText("Accepted");
+                    globalSelectedButton.setClickable(false);
+                    globalSelectedButton.setBackgroundColor(Color.LTGRAY);
+                    globalOtherButton.setVisibility(View.GONE);
 
                 }
             }
