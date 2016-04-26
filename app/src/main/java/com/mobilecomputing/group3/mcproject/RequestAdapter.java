@@ -34,7 +34,7 @@ public class RequestAdapter extends  ArrayAdapter{
         private final int MAX_ENTRIES = 5;
         String userName2,userName1;
         String ip=new IP().getIP();
-        Button globalSelectedButton, globalOtherButton;
+        Button globalSelectedButton, globalOtherButton1,globalOtherButton2;
 
         public RequestAdapter(Context context, int resource, String userName1) {
             super(context, R.layout.requestlist);
@@ -47,6 +47,7 @@ public class RequestAdapter extends  ArrayAdapter{
             TextView NAME;
             Button accept;
             Button reject;
+            Button tent;
         }
 
 
@@ -54,6 +55,11 @@ public class RequestAdapter extends  ArrayAdapter{
             list.add(object);
             super.add(object);
         }
+
+    public void clearAll() {
+        super.clear();
+        list.clear();
+    }
 
 
         @Override
@@ -92,12 +98,14 @@ public class RequestAdapter extends  ArrayAdapter{
 
             holder.accept=(Button) row.findViewById(R.id.acceptBtn);
             holder.reject=(Button) row.findViewById(R.id.rejectBtn);
+            holder.tent=(Button) row.findViewById(R.id.tentBtn);
             holder.accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
                         globalSelectedButton=holder.accept;
-                        globalOtherButton=holder.reject;
+                        globalOtherButton1=holder.reject;
+                        globalOtherButton2=holder.tent;
 //                      Toast.makeText(getContext(), userList.getJSONObject(position).get("username").toString(), Toast.LENGTH_LONG).show();
                         SearchClass FR=(SearchClass) getItem(position);
                         userName2=FR.getUsername();
@@ -114,12 +122,31 @@ public class RequestAdapter extends  ArrayAdapter{
                 public void onClick(View v) {
                     try {
                         globalSelectedButton=holder.reject;
-                        globalOtherButton=holder.accept;
+                        globalOtherButton1=holder.accept;
+                        globalOtherButton2=holder.tent;
 //                      Toast.makeText(getContext(), userList.getJSONObject(position).get("username").toString(), Toast.LENGTH_LONG).show();
                         SearchClass FR=(SearchClass) getItem(position);
                         userName2=FR.getUsername();
                         SendInfo s=new SendInfo();
                         s.execute("reject");
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            holder.tent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        globalSelectedButton=holder.tent;
+                        globalOtherButton1=holder.accept;
+                        globalOtherButton2=holder.reject;
+//                      Toast.makeText(getContext(), userList.getJSONObject(position).get("username").toString(), Toast.LENGTH_LONG).show();
+                        SearchClass FR=(SearchClass) getItem(position);
+                        userName2=FR.getUsername();
+                        SendInfo s=new SendInfo();
+                        s.execute("tentative");
                     }catch (Exception ex){
                         ex.printStackTrace();
                     }
@@ -241,6 +268,53 @@ public class RequestAdapter extends  ArrayAdapter{
                 }
             }
 
+
+
+            public void sendTenInfo() throws UnsupportedEncodingException {
+                // Create data variable for sent values to server
+                String data = URLEncoder.encode("fromUsername", "UTF-8")
+                        + "=" + URLEncoder.encode(userName2, "UTF-8");
+
+                data += "&" + URLEncoder.encode("toUsername", "UTF-8") + "="
+                        + URLEncoder.encode(userName1, "UTF-8");
+
+                BufferedReader reader = null;
+
+                // Send data
+                try {
+                    // Defined URL  where to send data
+                    URL url = new URL("http://"+ip+":3000/tentative");
+
+                    // Send POST data request
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+                    //conn.connect();
+                    conn.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                    wr.write(data);
+                    wr.flush();
+
+                    // Get the server response
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+
+                    // Read Server Response
+                    while ((line = reader.readLine()) != null) {
+                        // Append server response in string
+                        sb.append(line);
+                    }
+                    text = sb.toString();
+                } catch (Exception ex) {}
+                finally {
+                    try {
+                        reader.close();
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+
             @Override
             protected String doInBackground(String... params) {
                 try {
@@ -249,6 +323,8 @@ public class RequestAdapter extends  ArrayAdapter{
                         sendAccInfo();
                     else if(params[0].equals("reject"))
                         sendRejInfo();
+                    else  if(params[0].equals("tentative"))
+                        sendTenInfo();
                 } catch (Exception ex) {}
                 return null;
             }
@@ -261,7 +337,8 @@ public class RequestAdapter extends  ArrayAdapter{
                     globalSelectedButton.setText("Rejected");
                     globalSelectedButton.setClickable(false);
                     globalSelectedButton.setBackgroundColor(Color.LTGRAY);
-                    globalOtherButton.setVisibility(View.GONE);
+                    globalOtherButton1.setVisibility(View.GONE);
+                    globalOtherButton2.setVisibility(View.GONE);
                 }
                 else if(text.equals("accepted")) {
                     Log.i("ABC", text);
@@ -269,8 +346,18 @@ public class RequestAdapter extends  ArrayAdapter{
                     globalSelectedButton.setText("Accepted");
                     globalSelectedButton.setClickable(false);
                     globalSelectedButton.setBackgroundColor(Color.LTGRAY);
-                    globalOtherButton.setVisibility(View.GONE);
+                    globalOtherButton1.setVisibility(View.GONE);
+                    globalOtherButton2.setVisibility(View.GONE);
+                }
 
+                else if(text.equals("tentatived")) {
+                    Log.i("ABC", text);
+                    Toast.makeText(getContext(), "Tentative", Toast.LENGTH_LONG).show();
+                    globalSelectedButton.setText("Tentative");
+                    globalSelectedButton.setClickable(false);
+                    globalSelectedButton.setBackgroundColor(Color.LTGRAY);
+                    globalOtherButton1.setVisibility(View.GONE);
+                    globalOtherButton2.setVisibility(View.GONE);
                 }
             }
         }

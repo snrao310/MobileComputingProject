@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,8 +38,9 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
 
     ListView listview;
     String[] users;
+    JSONArray reqList,teamList;
     String[] areas_of_interest;
-    String[] skills;
+    String[] skills, reqConstraint, teamConstraint;
     JSONObject jsonObject;
     JSONArray userList;
 
@@ -89,6 +91,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
 //            // Anything else I need to handle here?
 //        }
 
+    }
+
+    public void refresh(){
+        adapter.clearAll();
+        GetInfo info = new GetInfo();
+        info.execute();
     }
 
     public void populateAOI() {
@@ -198,7 +206,11 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
         while ( res.hasNext() ) {
             JSONObject j=(JSONObject) res.next();
             try {
-                adapter.add(new SearchClass(j.getString("name"), j.getString("username")));
+                String userName1=getActivity().getIntent().getExtras().get("username").toString();
+                if(!Arrays.asList(reqConstraint).contains(j.getString("username")) &&
+                        !Arrays.asList(teamConstraint).contains(j.getString("username")) &&
+                        !j.get("username").toString().equals(userName1))
+                    adapter.add(new SearchClass(j.getString("name"), j.getString("username")));
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -318,6 +330,49 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
 
     private class GetInfo extends AsyncTask<String, Void, String> {
 
+
+        public void getReqList() {
+            try {
+                String username=getActivity().getIntent().getExtras().get("username").toString();
+                String myurl = "http://" + ip + ":3000/user/"+username;
+
+                URL url = new URL(myurl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.i("ERROR: ", "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage());
+                }
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder total = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    total.append(line);
+                }
+
+                jsonObject = new JSONObject(total.toString());
+                reqList=jsonObject.getJSONArray("sentRequests");
+                teamList=jsonObject.getJSONArray("teamwith");
+                reqConstraint=new String[reqList.length()];
+                teamConstraint=new String[teamList.length()];
+                for(int i=0;i<reqList.length();i++){
+                    reqConstraint[i]=reqList.getString(i);
+                }
+
+                for(int i=0;i<teamList.length();i++){
+                    teamConstraint[i]=teamList.getString(i);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         public void getAllUsers() {
             try {
                 String myurl = "http://"+ip +":3000/users";
@@ -356,10 +411,10 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
                 userSet = new HashSet(userList.length());
                 areaSet = new HashSet<>();
                 skillSet = new HashSet<>();
-
+                String userName1=getActivity().getIntent().getExtras().get("username").toString();
 
                 if ( adapter == null ) {
-                    String userName1=getActivity().getIntent().getExtras().get("username").toString();
+                   userName1=getActivity().getIntent().getExtras().get("username").toString();
                     adapter = new SearchAdapter(getActivity(),R.layout.userlist,userName1);
                 }
 
@@ -374,7 +429,10 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
 
                     userSet.add(temp.get("name").toString());
                     SearchClass obj = new SearchClass(temp.get("name").toString(),temp.get("username").toString());
-                    adapter.add(obj);
+                    if(!Arrays.asList(reqConstraint).contains(temp.getString("username")) &&
+                            !Arrays.asList(teamConstraint).contains(temp.getString("username")) &&
+                            !temp.get("username").toString().equals(userName1))
+                        adapter.add(obj); JSONArray reqList;
 
                     for ( int j = 0; j < arr_area.length(); j++ ) {
                         areaSet.add(arr_area.get(j).toString().trim());
@@ -394,6 +452,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener{
 
         @Override
         protected String doInBackground(String... arg0) {
+            getReqList();
             getAllUsers();
             return null;
         }

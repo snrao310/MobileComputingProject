@@ -1,21 +1,13 @@
 package com.mobilecomputing.group3.mcproject;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,11 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by snrao on 4/18/16.
@@ -59,14 +48,17 @@ public class RequestsFragment extends Fragment {
         return view;
     }
 
+    public void refresh(){
+        adapter.clearAll();
+        GetInfo info = new GetInfo();
+        info.execute();
+    }
+
 
     private class GetInfo extends AsyncTask<String, Void, String> {
 
         String[] reqConstraint;
         HashSet<JSONObject> resultSet;
-
-
-
 
         public void populate() {
             JSONObject temp;

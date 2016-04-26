@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mobilecomputing.group3.mcproject.ProfileActivity"
-    android:background="#a26f6f">
+    android:background="@drawable/back">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +29,8 @@
             android:layout_below="@id/profile_fragment"
             android:layout_centerHorizontal="true"
             android:text="View Received Requests"
-            android:onClick="onReqBtnClick" />
+            android:onClick="onReqBtnClick"
+            android:layout_marginTop="30dp"/>
 
         <fragment
             android:layout_width="match_parent"
@@ -46,7 +47,8 @@
             android:layout_below="@id/requests_fragment"
             android:layout_centerHorizontal="true"
             android:text="SEARCH NEW PARTNER"
-            android:onClick="onSearchBtnClick"/>
+            android:onClick="onSearchBtnClick"
+            android:layout_marginTop="30dp"/>
 
         <fragment
             android:layout_width="match_parent"

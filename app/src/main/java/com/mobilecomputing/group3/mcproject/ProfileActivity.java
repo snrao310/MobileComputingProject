@@ -22,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
         FilterFragment ff = (FilterFragment) fragmentManager.findFragmentById(R.id.filter_fragment);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if ( b ) {
+            ff.refresh();
             fragmentTransaction.show(ff).commit();
             b = false;
         } else {
@@ -36,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         RequestsFragment rf = (RequestsFragment) fragmentManager.findFragmentById(R.id.requests_fragment);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if ( rb ) {
+            rf.refresh();
             fragmentTransaction.show(rf).commit();
             rb = false;
         } else {

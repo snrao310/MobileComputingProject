@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mobilecomputing.group3.mcproject.TeamActivity">
+    tools:context="com.mobilecomputing.group3.mcproject.TeamActivity"
+    android:background="@drawable/back">
 
     <Button
         android:layout_width="wrap_content"
@@ -32,6 +33,42 @@
         android:layout_height="wrap_content"
         android:id="@+id/teamlist"
         android:layout_below="@+id/title">
+    </ListView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamlist"
+        android:text="TENTATIVE REQUESTS"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tentTitle" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tentMineList"
+        android:layout_below="@+id/tentTitle">
+    </ListView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tentMineList"
+        android:text="TENTATIVE SENT REQUESTS"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tentSentTitle"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tentOthersList"
+        android:layout_below="@+id/tentSentTitle">
     </ListView>
 
 </RelativeLayout>
