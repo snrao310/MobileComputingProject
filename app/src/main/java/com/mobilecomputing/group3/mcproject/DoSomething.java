@@ -6,10 +6,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,16 +19,11 @@ public class DoSomething extends Activity {
         super.onCreate(savedInstanceState);
         Bundle meetReqs = getIntent().getExtras();
 
-        double latitude = Double.parseDouble(meetReqs.getString("src_latitude"));
-        double longitude = Double.parseDouble(meetReqs.getString("src_longitude"));
-        double src_latitude = Double.parseDouble(meetReqs.getString("latitude"));
-        double src_longitude = Double.parseDouble(meetReqs.getString("longitude"));
-
         // First update the server
         GetInfo info = new GetInfo();
         String[] details = new String[6];
         details[0] = meetReqs.getString("src_latitude");
-        details[1] = meetReqs.getString("src_latitude");
+        details[1] = meetReqs.getString("src_longitude");
         details[2] = meetReqs.getString("latitude");
         details[3] = meetReqs.getString("longitude");
         details[4] = meetReqs.getString("fromUser");
