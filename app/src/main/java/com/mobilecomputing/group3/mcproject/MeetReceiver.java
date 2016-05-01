@@ -132,7 +132,6 @@ public class MeetReceiver extends BroadcastReceiver {
                             .setSmallIcon(R.drawable.mr_ic_cast_dark)
                             .setContentTitle(meetACReqs.getString("ac_user") + " has accepted your meet request")
                             .setContentText("Tap to accept and open maps")
-                            .setContentIntent(pendingIntent)
                             .setDefaults(Notification.DEFAULT_SOUND)
                             .setAutoCancel(true);
 

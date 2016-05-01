@@ -146,7 +146,7 @@ public class SearchAdapter extends ArrayAdapter{
 
                     // 5. And hope the receiver accepts the message
                 } catch (Exception ex) {
-                    Toast.makeText(getContext(),"EXCEPTION",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
 

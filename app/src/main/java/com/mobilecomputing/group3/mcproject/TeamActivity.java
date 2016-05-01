@@ -1,6 +1,12 @@
 package com.mobilecomputing.group3.mcproject;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,13 +16,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -30,24 +39,174 @@ public class TeamActivity extends AppCompatActivity {
     JSONArray teamList,tenOthersList,tenMineList;
     JSONArray userList;
     HashSet<String> userSet;
+    String currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
+        currentUser = getIntent().getExtras().getString("username");
+
         GetInfo info = new GetInfo();
         info.execute();
-
-//        String[] sample={"a","b"};
-//        ListAdapter teamAdapt=new TeamAdapter(this, sample);
-//        ListView listView=(ListView) findViewById(R.id.teamlist);
-//        listView.setAdapter(teamAdapt);
     }
 
     public void onBack(View view){
         finish();
     }
+
+
+    public void onMeet(View view) {
+        // For each user, do
+        String sourceUsername = currentUser;
+        String targetUsername = "";
+
+        try {
+            for ( int i = 0; i < userList.length(); i++ ) {
+                JSONObject temp = userList.getJSONObject(i);
+                targetUsername = temp.getString("username");
+                if ( !sourceUsername.equals(targetUsername) ) {
+                    // Send request
+                    double[] location = (new LocList()).getLocation();
+                    String[] details = new String[4];
+                    double latitude_cur = location[0];
+                    double longitude_cur = location[1];
+
+                    details[0] = sourceUsername;
+                    details[1] = targetUsername;
+                    details[2] = String.valueOf(latitude_cur);
+                    details[3] = String.valueOf(longitude_cur);
+
+                    GetMeetRequestsTask makeMeetRequest = new GetMeetRequestsTask();
+                    makeMeetRequest.execute(details);
+                }
+            }
+        } catch (JSONException ex) {
+            // Caught json exception
+            Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /* Get meet requests task, copied from search adapter.java file */
+    class GetMeetRequestsTask extends AsyncTask<String, Void, String> {
+        public String meetRequester = "";
+
+        @Override
+        protected String doInBackground(String ... details) {
+            try {
+                URL url = new URL("http://" + new IP().getIP() + ":3000/makemeetrequest");
+
+                String data = URLEncoder.encode("fromUsername", "UTF-8") + "=" + URLEncoder.encode(details[0], "UTF-8") + "&";
+                data+= URLEncoder.encode("toUsername", "UTF-8") + "=" + URLEncoder.encode(details[1], "UTF-8") + "&";
+                data+= URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(details[2], "UTF-8") + "&";
+                data+= URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(details[3], "UTF-8");
+
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = reader.readLine();
+
+                meetRequester = line;
+
+                return line;
+            } catch(Exception ex) {
+                return null; // Error processing request/response
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {  }
+    }
+
+
+
+    /* ------------------------------ Start Get location ----------------------------- */
+
+    class LocList implements LocationListener {
+        private LocationManager locMgr;
+        private double latitude, longitude;
+        private Location location;
+
+        public LocList() {
+            try {
+                locMgr = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+                locMgr.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2000, 10, this);
+                Location location_g = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Location location_n = locMgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if ( location_g != null ) {
+                    this.location = location_g;
+                }
+                if ( location_g == null && location_n != null ) {
+                    this.location = location_n;
+                }
+            } catch (SecurityException ex) {
+                Log.i("EXCEPTION:", "Permission denied");
+            }
+        }
+
+        public LocationManager getLocationManager() {
+            return locMgr;
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            this.latitude = location.getLatitude();
+            this.longitude = location.getLongitude();
+            this.location = location;
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            getApplicationContext().startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Gps is turned off!! ",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Toast.makeText(getApplicationContext(), "Gps is turned on!! ",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        public double getLatitude() {
+            return this.latitude;
+        }
+
+        public double getLongitude() {
+            return this.longitude;
+        }
+
+        public double[] getLocation() {
+            double[] loc_details = new double[2];
+            loc_details[0] = location.getLatitude();
+            loc_details[1] = location.getLongitude();
+            return loc_details;
+        }
+    }
+
+
+    /* ------------------------------ End Get location ----------------------------- */
+
+
+    /* ------------ Start Updating Server with location info ----------------------- */
+
+    /* ------------ End Updating Server with location info ----------------------- */
 
 
 

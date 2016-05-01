@@ -16,6 +16,14 @@
         android:id="@+id/back"
         android:onClick="onBack"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meet"
+        android:id="@+id/btnMeet"
+        android:layout_toRightOf="@+id/back"
+        android:onClick="onMeet" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
