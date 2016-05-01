@@ -1,8 +1,15 @@
 package com.mobilecomputing.group3.mcproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +34,10 @@ import java.util.List;
 /**
  * Created by sureshgururajan on 4/19/16.
  */
-public class SearchAdapter extends ArrayAdapter {
+public class SearchAdapter extends ArrayAdapter{
     private List list= new ArrayList();
     private final int MAX_ENTRIES = 5;
+
     JSONArray userList;
     String userName2,userName1;
     String ip=new IP().getIP();
@@ -108,8 +116,151 @@ public class SearchAdapter extends ArrayAdapter {
                 }
             }
         });
+
+        holder.meet = (Button) row.findViewById(R.id.meetButton);
+        holder.meet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // 1. Get source username, target username, source user's current location
+                    SearchClass FR=(SearchClass)getItem(position);
+                    userName2=FR.getUsername();
+                    double[] location = (new LocList()).getLocation();
+
+                    // 2. These are the details you need to send to server
+                    String sourceUsername = userName1;
+                    String targetUsername = userName2;
+                    double latitude_cur = location[0];
+                    double longitude_cur = location[1];
+                    String[] details = new String[4];
+
+                    // 3. Pack the above four details into a string array
+                    details[0] = sourceUsername;
+                    details[1] = targetUsername;
+                    details[2] = String.valueOf(latitude_cur);
+                    details[3] = String.valueOf(longitude_cur);
+
+                    // 4. And send it to the server
+                    GetMeetRequestsTask makeMeetRequest = new GetMeetRequestsTask();
+                    makeMeetRequest.execute(details);
+
+                    // 5. And hope the receiver accepts the message
+                } catch (Exception ex) {
+                    Toast.makeText(getContext(),"EXCEPTION",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            class LocList implements LocationListener {
+                private LocationManager locMgr;
+                private double latitude, longitude;
+                private Location location;
+
+                public LocList() {
+                    try {
+                        locMgr = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                        locMgr.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2000, 10, this);
+                        Location location_g = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        Location location_n = locMgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if ( location_g != null ) {
+                            this.location = location_g;
+                        }
+                        if ( location_g == null && location_n != null ) {
+                            this.location = location_n;
+                        }
+                    } catch (SecurityException ex) {
+                        Log.i("EXCEPTION:", "Permission denied");
+                    }
+                }
+
+                public LocationManager getLocationManager() {
+                    return locMgr;
+                }
+
+                @Override
+                public void onLocationChanged(Location location) {
+                    this.latitude = location.getLatitude();
+                    this.longitude = location.getLongitude();
+                    this.location = location;
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    getContext().startActivity(intent);
+                    Toast.makeText(getContext(), "Gps is turned off!! ",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                    Toast.makeText(getContext(), "Gps is turned on!! ",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                public double getLatitude() {
+                    return this.latitude;
+                }
+
+                public double getLongitude() {
+                    return this.longitude;
+                }
+
+                public double[] getLocation() {
+                    double[] loc_details = new double[2];
+                    loc_details[0] = location.getLatitude();
+                    loc_details[1] = location.getLongitude();
+                    return loc_details;
+                }
+            }
+
+            class GetMeetRequestsTask extends AsyncTask<String, Void, String> {
+                public String meetRequester = "";
+
+                @Override
+                protected String doInBackground(String ... details) {
+                    try {
+                        URL url = new URL("http://" + new IP().getIP() + ":3000/makemeetrequest");
+
+                        String data = URLEncoder.encode("fromUsername", "UTF-8") + "=" + URLEncoder.encode(details[0], "UTF-8") + "&";
+                        data+= URLEncoder.encode("toUsername", "UTF-8") + "=" + URLEncoder.encode(details[1], "UTF-8") + "&";
+                        data+= URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(details[2], "UTF-8") + "&";
+                        data+= URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(details[3], "UTF-8");
+
+                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+                        conn.setRequestMethod("POST");
+                        conn.setDoOutput(true);
+                        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                        wr.write(data);
+                        wr.flush();
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder sb = new StringBuilder();
+                        String line = reader.readLine();
+
+                        meetRequester = line;
+
+                        return line;
+                    } catch(Exception ex) {
+                        return null; // Error processing request/response
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {  }
+            }
+
+        });
         return row;
     }
+
 
 
 

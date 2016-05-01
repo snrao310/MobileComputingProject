@@ -6,6 +6,6 @@ package com.mobilecomputing.group3.mcproject;
 public class IP {
 
     public String getIP(){
-        return "192.168.0.12";
+        return "192.168.0.34";
     }
 }
