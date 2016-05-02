@@ -170,7 +170,7 @@ public class MeetReceiver extends BroadcastReceiver {
                     notificationmanager.notify(0, mBuilder.build());
 
                 } catch(Exception ex) {
-                    Toast.makeText(context, meetReqs.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
                 meetReqs = null;

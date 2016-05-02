@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,10 +36,10 @@ public class TeamActivity extends AppCompatActivity {
     String ip = new IP().getIP();
     TentativeMineAdapter tentativeMineAdapter;
     TeamAdapter teamAdapter, tentOthersAdapter;
-    ListView listview,listview2,listview3;
-    JSONObject jsonObject;
-    JSONArray teamList,tenOthersList,tenMineList;
-    JSONArray userList;
+    ListView listview, listview2, listview3;
+    JSONObject jsonObject, placesObject;
+    JSONArray teamList, tenOthersList, tenMineList;
+    JSONArray userList, placesList;
     HashSet<String> userSet;
     String currentUser;
     String[] teamConstraint;
@@ -53,8 +55,172 @@ public class TeamActivity extends AppCompatActivity {
         info.execute();
     }
 
-    public void onBack(View view){
+    public void onBack(View view) {
         finish();
+    }
+
+
+    public void onSuggest(View v) {
+        GetPlaces g = new GetPlaces(getApplicationContext());
+        g.execute();
+
+
+    }
+
+
+    private class GetPlaces extends AsyncTask<String, Void, String> {
+
+        Context context;
+        public GetPlaces(Context c){
+            this.context=c;
+        }
+
+
+        public void getUsers() {
+            try {
+                String myurl = "http://" + ip + ":3000/users";
+
+                URL url = new URL(myurl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.i("ERROR: ", "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage());
+                }
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder total = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    total.append(line);
+                }
+
+                jsonObject = new JSONObject(total.toString());
+                userList = jsonObject.getJSONArray("users");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        public void getplaces() {
+            try {
+                String myurl = "http://" + ip + ":3000/places";
+
+                URL url = new URL(myurl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.i("ERROR: ", "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage());
+                }
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder total = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    total.append(line);
+                }
+
+                placesObject = new JSONObject(total.toString());
+                placesList = placesObject.getJSONArray("places");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            double[] location = (new LocList()).getLocation();
+            String[] details = new String[4];
+            double latitude_cur = location[0];
+            double longitude_cur = location[1];
+            double minlat = 1000;
+            double minlong = 1000;
+            double maxlat = -1000;
+            double maxlong = -1000;
+
+            if (latitude_cur < minlat)
+                minlat = latitude_cur;
+            if (latitude_cur > maxlat)
+                maxlat = latitude_cur;
+
+            if (longitude_cur < minlong)
+                minlong = longitude_cur;
+            if (longitude_cur > maxlong)
+                maxlong = longitude_cur;
+
+            try {
+                for (int i = 0; i < userList.length(); i++) {
+                    JSONObject temp = userList.getJSONObject(i);
+
+                    if (!temp.getString("username").equals(currentUser) && Arrays.asList(teamConstraint).contains(temp.getString("username"))) {
+                        // This guy is a team member
+
+                        double lat = Double.parseDouble(temp.getString("current_latitude"));
+                        double longi = Double.parseDouble(temp.getString("current_longitude"));
+                        if (lat < minlat)
+                            minlat = lat;
+                        if (lat > maxlat)
+                            maxlat = lat;
+
+                        if (longi < minlong)
+                            minlong = longi;
+                        if (longi > maxlong)
+                            maxlong = longi;
+                    }
+                }
+            } catch (JSONException ex) {
+                Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            double startlat = minlat - (maxlat - minlat) / 2;
+            double endlat = maxlat + (maxlat - minlat) / 2;
+            double startlon = minlong - (maxlong - minlong) / 2;
+            double endlon = maxlong + (maxlong - minlong) / 2;
+
+            try {
+                for (int i = 0; i < placesList.length(); i++) {
+                    JSONObject temp = placesList.getJSONObject(i);
+
+                    double lat = Double.parseDouble(temp.getString("latitude"));
+                    double longi = Double.parseDouble(temp.getString("longitude"));
+
+                    if (startlat < lat && lat < endlat && startlon < longi && longi < endlon) {
+                        placesList.remove(i);
+                    }
+                }
+            } catch (JSONException ex) {
+                Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            try {
+                Bundle b = new Bundle();
+                b.putString("Places", placesList.toString());
+                Intent intent = new Intent(TeamActivity.this, SuggestActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtras(b);
+                startActivity(intent);
+            }catch (Exception ex){
+                ex.getMessage();}
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            getUsers();
+            getplaces();
+            return null;
+        }
     }
 
 
@@ -64,10 +230,10 @@ public class TeamActivity extends AppCompatActivity {
         String targetUsername = "";
 
         try {
-            for ( int i = 0; i < userList.length(); i++ ) {
+            for (int i = 0; i < userList.length(); i++) {
                 JSONObject temp = userList.getJSONObject(i);
 
-                if ( !temp.getString("username").equals(currentUser) &&  Arrays.asList(teamConstraint).contains(temp.getString("username"))) {
+                if (!temp.getString("username").equals(currentUser) && Arrays.asList(teamConstraint).contains(temp.getString("username"))) {
                     // This guy is a team member
                     targetUsername = temp.getString("username");
 
@@ -87,8 +253,11 @@ public class TeamActivity extends AppCompatActivity {
                 }
             }
         } catch (JSONException ex) {
-            Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+
+        Button b=(Button)findViewById(R.id.btnSuggest);
+        b.setVisibility(View.VISIBLE);
     }
 
     /* Get meet requests task, copied from search adapter.java file */
@@ -96,16 +265,16 @@ public class TeamActivity extends AppCompatActivity {
         public String meetRequester = "";
 
         @Override
-        protected String doInBackground(String ... details) {
+        protected String doInBackground(String... details) {
             try {
                 URL url = new URL("http://" + new IP().getIP() + ":3000/makemeetrequest");
 
                 String data = URLEncoder.encode("fromUsername", "UTF-8") + "=" + URLEncoder.encode(details[0], "UTF-8") + "&";
-                data+= URLEncoder.encode("toUsername", "UTF-8") + "=" + URLEncoder.encode(details[1], "UTF-8") + "&";
-                data+= URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(details[2], "UTF-8") + "&";
-                data+= URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(details[3], "UTF-8");
+                data += URLEncoder.encode("toUsername", "UTF-8") + "=" + URLEncoder.encode(details[1], "UTF-8") + "&";
+                data += URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(details[2], "UTF-8") + "&";
+                data += URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(details[3], "UTF-8");
 
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
@@ -122,13 +291,14 @@ public class TeamActivity extends AppCompatActivity {
                 meetRequester = line;
 
                 return line;
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 return null; // Error processing request/response
             }
         }
 
         @Override
-        protected void onPostExecute(String s) {  }
+        protected void onPostExecute(String s) {
+        }
     }
 
 
@@ -143,13 +313,13 @@ public class TeamActivity extends AppCompatActivity {
         public LocList() {
             try {
                 locMgr = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-                locMgr.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2000, 10, this);
+                locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, this);
                 Location location_g = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 Location location_n = locMgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if ( location_g != null ) {
+                if (location_g != null) {
                     this.location = location_g;
                 }
-                if ( location_g == null && location_n != null ) {
+                if (location_g == null && location_n != null) {
                     this.location = location_n;
                 }
             } catch (SecurityException ex) {
@@ -212,10 +382,9 @@ public class TeamActivity extends AppCompatActivity {
     /* ------------ End Updating Server with location info ----------------------- */
 
 
-
     private class GetInfo extends AsyncTask<String, Void, String> {
 
-        String[] tentativeOthers,tentativeMine;
+        String[] tentativeOthers, tentativeMine;
         HashSet<JSONObject> resultSet;
 
         public void populate() {
@@ -226,13 +395,9 @@ public class TeamActivity extends AppCompatActivity {
                     temp = userList.getJSONObject(i);
                     if (Arrays.asList(teamConstraint).contains(temp.getString("username"))) {
                         teamAdapter.add(new SearchClass(temp.getString("name"), temp.getString("username")));
-                    }
-
-                    else if(Arrays.asList(tentativeMine).contains(temp.getString("username"))) {
+                    } else if (Arrays.asList(tentativeMine).contains(temp.getString("username"))) {
                         tentativeMineAdapter.add(new SearchClass(temp.getString("name"), temp.getString("username")));
-                    }
-
-                    else if(Arrays.asList(tentativeOthers).contains(temp.getString("username"))) {
+                    } else if (Arrays.asList(tentativeOthers).contains(temp.getString("username"))) {
                         tentOthersAdapter.add(new SearchClass(temp.getString("name"), temp.getString("username")));
                     }
                 } catch (Exception ex) {
@@ -255,16 +420,16 @@ public class TeamActivity extends AppCompatActivity {
             adjustList(listview3);
         }
 
-        public void adjustList(ListView listView){
+        public void adjustList(ListView listView) {
             ViewGroup.LayoutParams lp = listview.getLayoutParams();
 
             int totalHeight = 0,
                     desiredWidth = View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.UNSPECIFIED);
             View v = null;
 
-            for ( int i = 0 ; i < teamAdapter.getCount(); i++ ) {
+            for (int i = 0; i < teamAdapter.getCount(); i++) {
                 v = teamAdapter.getView(i, v, listview);
-                if ( i == 0 ) {
+                if (i == 0) {
                     v.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }
                 v.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
@@ -278,8 +443,8 @@ public class TeamActivity extends AppCompatActivity {
 
         public void getTeams() {
             try {
-                String username=getIntent().getExtras().get("username").toString();
-                String myurl = "http://" + ip + ":3000/user/"+username;
+                String username = getIntent().getExtras().get("username").toString();
+                String myurl = "http://" + ip + ":3000/user/" + username;
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -300,24 +465,24 @@ public class TeamActivity extends AppCompatActivity {
                 }
 
                 jsonObject = new JSONObject(total.toString());
-                teamList=jsonObject.getJSONArray("teamwith");
-                tenOthersList=jsonObject.getJSONArray("tentative_others");
-                tenMineList=jsonObject.getJSONArray("tentative_mine");
-                teamConstraint=new String[teamList.length()+1];
-                tentativeOthers=new String[tenOthersList.length()];
-                tentativeMine=new String[tenMineList.length()];
+                teamList = jsonObject.getJSONArray("teamwith");
+                tenOthersList = jsonObject.getJSONArray("tentative_others");
+                tenMineList = jsonObject.getJSONArray("tentative_mine");
+                teamConstraint = new String[teamList.length() + 1];
+                tentativeOthers = new String[tenOthersList.length()];
+                tentativeMine = new String[tenMineList.length()];
                 int i;
-                for(i=0;i<teamList.length();i++){
-                    teamConstraint[i]=teamList.getString(i);
+                for (i = 0; i < teamList.length(); i++) {
+                    teamConstraint[i] = teamList.getString(i);
                 }
-                teamConstraint[i]=username;
+                teamConstraint[i] = username;
 
-                for(i=0;i<tenOthersList.length();i++){
-                    tentativeOthers[i]=tenOthersList.getString(i);
+                for (i = 0; i < tenOthersList.length(); i++) {
+                    tentativeOthers[i] = tenOthersList.getString(i);
                 }
 
-                for(i=0;i<tenMineList.length();i++){
-                    tentativeMine[i]=tenMineList.getString(i);
+                for (i = 0; i < tenMineList.length(); i++) {
+                    tentativeMine[i] = tenMineList.getString(i);
                 }
 
             } catch (Exception e) {
@@ -327,10 +492,9 @@ public class TeamActivity extends AppCompatActivity {
         }
 
 
-
         public void getAllUsers() {
             try {
-                String myurl = "http://"+ip +":3000/users";
+                String myurl = "http://" + ip + ":3000/users";
 
                 URL url = new URL(myurl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -365,22 +529,22 @@ public class TeamActivity extends AppCompatActivity {
                 userSet = new HashSet(userList.length());
 
 
-                if ( teamAdapter == null ) {
-                    String userName1=getIntent().getExtras().get("username").toString();
-                    teamAdapter = new TeamAdapter(TeamActivity.this,R.layout.team_row_layout,userName1);
+                if (teamAdapter == null) {
+                    String userName1 = getIntent().getExtras().get("username").toString();
+                    teamAdapter = new TeamAdapter(TeamActivity.this, R.layout.team_row_layout, userName1);
                 }
 
-                if ( tentativeMineAdapter == null ) {
-                    String userName1=getIntent().getExtras().get("username").toString();
-                    tentativeMineAdapter = new TentativeMineAdapter(TeamActivity.this,R.layout.tentminerow,userName1);
+                if (tentativeMineAdapter == null) {
+                    String userName1 = getIntent().getExtras().get("username").toString();
+                    tentativeMineAdapter = new TentativeMineAdapter(TeamActivity.this, R.layout.tentminerow, userName1);
                 }
 
-                if ( tentOthersAdapter == null ) {
-                    String userName1=getIntent().getExtras().get("username").toString();
-                    tentOthersAdapter = new TeamAdapter(TeamActivity.this,R.layout.team_row_layout,userName1);
+                if (tentOthersAdapter == null) {
+                    String userName1 = getIntent().getExtras().get("username").toString();
+                    tentOthersAdapter = new TeamAdapter(TeamActivity.this, R.layout.team_row_layout, userName1);
                 }
                 populate();
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -46,21 +46,18 @@
             android:value="AIzaSyCLYk0A0pvee--2QzM5GQGz3GDdcy99CvA" />
 
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".FilterFragment" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".TeamActivity" />
-        <activity android:name=".NotifyActivityHandler"></activity>
-
-        <activity
-            android:name="com.mobilecomputing.group3.mcproject.DoSomething">
-        </activity>
+        <activity android:name=".NotifyActivityHandler" />
+        <activity android:name=".DoSomething"></activity>
 
         <receiver
             android:name=".MeetReceiver"
             android:enabled="true"
             android:exported="true"
-            android:process=":remote">
-        </receiver>
+            android:process=":remote"></receiver>
+
+        <activity android:name=".SuggestActivity"></activity>
     </application>
 
 </manifest>
