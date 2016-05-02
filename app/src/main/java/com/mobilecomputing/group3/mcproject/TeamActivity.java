@@ -40,6 +40,7 @@ public class TeamActivity extends AppCompatActivity {
     JSONArray userList;
     HashSet<String> userSet;
     String currentUser;
+    String[] teamConstraint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,11 @@ public class TeamActivity extends AppCompatActivity {
         try {
             for ( int i = 0; i < userList.length(); i++ ) {
                 JSONObject temp = userList.getJSONObject(i);
-                targetUsername = temp.getString("username");
-                if ( !sourceUsername.equals(targetUsername) ) {
+
+                if ( !temp.getString("username").equals(currentUser) &&  Arrays.asList(teamConstraint).contains(temp.getString("username"))) {
+                    // This guy is a team member
+                    targetUsername = temp.getString("username");
+
                     // Send request
                     double[] location = (new LocList()).getLocation();
                     String[] details = new String[4];
@@ -83,7 +87,6 @@ public class TeamActivity extends AppCompatActivity {
                 }
             }
         } catch (JSONException ex) {
-            // Caught json exception
             Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
@@ -212,7 +215,7 @@ public class TeamActivity extends AppCompatActivity {
 
     private class GetInfo extends AsyncTask<String, Void, String> {
 
-        String[] teamConstraint,tentativeOthers,tentativeMine;
+        String[] tentativeOthers,tentativeMine;
         HashSet<JSONObject> resultSet;
 
         public void populate() {
