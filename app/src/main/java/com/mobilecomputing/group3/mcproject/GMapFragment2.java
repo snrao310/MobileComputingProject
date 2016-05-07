@@ -51,7 +51,7 @@ public class GMapFragment2 extends Fragment implements OnMapReadyCallback, View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
-            view = inflater.inflate(R.layout.map_fragment2, container, false);
+            view = inflater.inflate(R.layout.map_fragment, container, false);
            return view;
         }
         catch (Exception e){
@@ -64,14 +64,14 @@ public class GMapFragment2 extends Fragment implements OnMapReadyCallback, View.
         super.onViewCreated(view, savedInstanceState);
         MapFragment mapFragment = null;
 
-        int apiVersion = android.os.Build.VERSION.SDK_INT;
-        if ( apiVersion > Build.VERSION_CODES.KITKAT) {
-            mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag2);
-        } else {
-            mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag2);
-        }
-
-        mapFragment.getMapAsync(this);
+//        int apiVersion = android.os.Build.VERSION.SDK_INT;
+//        if ( apiVersion > Build.VERSION_CODES.KITKAT) {
+//            mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag2);
+//        } else {
+//            mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag2);
+//        }
+//
+//        mapFragment.getMapAsync(this);
     }
 
     @Override

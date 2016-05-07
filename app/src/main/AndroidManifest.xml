@@ -57,7 +57,7 @@
             android:exported="true"
             android:process=":remote"></receiver>
 
-        <activity android:name=".SuggestActivity"></activity>
+        <activity android:name=".MapsActivity"></activity>
     </application>
 
 </manifest>

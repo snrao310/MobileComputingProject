@@ -30,6 +30,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -206,7 +207,7 @@ public class TeamActivity extends AppCompatActivity {
             try {
                 Bundle b = new Bundle();
                 b.putString("Places", placesList.toString());
-                Intent intent = new Intent(TeamActivity.this, SuggestActivity.class);
+                Intent intent = new Intent(TeamActivity.this, MapsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtras(b);
                 startActivity(intent);

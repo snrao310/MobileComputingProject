@@ -61,7 +61,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, View.O
         MapFragment mapFragment = null;
 
         int apiVersion = android.os.Build.VERSION.SDK_INT;
-        if ( apiVersion > Build.VERSION_CODES.KITKAT) {
+        if ( apiVersion >= Build.VERSION_CODES.KITKAT) {
             mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapfrag);
         } else {
             mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfrag);
